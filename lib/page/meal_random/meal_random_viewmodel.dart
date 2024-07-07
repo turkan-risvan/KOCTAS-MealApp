@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:recipes_app/data/repo/random_repostory.dart';
 import 'package:recipes_app/model/meal_random_model.dart';
-import 'package:recipes_app/repo/repostory.dart';
  
 
 class MealRandomViewModel extends ChangeNotifier {

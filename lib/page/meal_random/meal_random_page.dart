@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recipes_app/viewmodel/meal_random_viewmodel.dart';
+import 'package:recipes_app/page/meal_random/meal_random_viewmodel.dart';
 
 class MealPage extends StatefulWidget {
   @override

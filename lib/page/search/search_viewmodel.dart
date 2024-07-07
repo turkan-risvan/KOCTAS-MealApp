@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+
+import 'package:recipes_app/data/repo/search_repostory.dart';
 import 'package:recipes_app/model/search_model.dart';
-import 'package:recipes_app/repo/search_repostory.dart';
 
 
 class SearchViewModel extends ChangeNotifier {
@@ -20,3 +21,4 @@ class SearchViewModel extends ChangeNotifier {
     }
   }
 }
+

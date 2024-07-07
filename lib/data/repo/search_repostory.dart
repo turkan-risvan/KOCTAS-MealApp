@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:recipes_app/model/search_model.dart';
 
+
 class SearchRepository {
   final String _baseUrl = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
 
