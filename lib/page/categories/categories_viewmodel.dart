@@ -1,8 +1,8 @@
 // categories_view_model.dart
 import 'package:flutter/material.dart';
-
-import 'package:recipes_app/data/repo/categories_repostory.dart';
-import 'package:recipes_app/model/categories_model.dart';
+import 'package:recipes_app/data/repo/repository.dart';
+ 
+import 'package:recipes_app/model/categories/categories_model.dart';
  
 
 class CategoriesViewModel extends ChangeNotifier {
