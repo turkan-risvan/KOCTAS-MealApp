@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:recipes_app/model/categories/categories_model.dart';
+import 'package:recipes_app/model/list_category/list_category_model.dart';
 import 'package:recipes_app/model/meal_details/meal_deails_model.dart';
+import 'package:recipes_app/model/meal_filter/meal_filter_model.dart';
 import 'package:recipes_app/model/meal_random/meal_random_model.dart';
 import 'package:recipes_app/model/search/search_model.dart';
 
@@ -13,8 +15,11 @@ part 'meal_service.g.dart';
 abstract class MealService {
   factory MealService(Dio dio, {String baseUrl}) = _MealService;
 
-  @GET('/search.php')
-  Future<SearchModel> searchMeal(@Query('f') String query);
+ 
+   @GET("/search.php")
+  Future<HttpResponse<SearchModel>> searchMeal(
+    @Query("f") String query,
+  );
 
   @GET('/lookup.php?i=52772')
   Future<MealDetailsModel> getMealDetails(@Query('i') String id);
@@ -26,11 +31,11 @@ abstract class MealService {
   Future<CategoriesModel> getCategories();
 
 
- @GET('/filter.php')
-  Future<SearchModel> filterMeal(@Query('c') String query);
+  @GET('/filter.php')
+  Future<HttpResponse<MealFilterModel>> filterMeal(@Query('c') String query);
 
-  @GET('/list.php?c=list')
-  Future<SearchModel> listMeal();
+ @GET('/list.php?c=list')
+  Future<HttpResponse<ListCategoryModel>> listCategoryMeal();
  
 
 }

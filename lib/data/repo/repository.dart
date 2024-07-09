@@ -1,9 +1,11 @@
  
 import 'package:recipes_app/data/service/meal_service.dart';
 import 'package:recipes_app/model/categories/categories_model.dart';
+import 'package:recipes_app/model/list_category/list_category_model.dart';
 import 'package:recipes_app/model/meal_details/meal_deails_model.dart';
-import 'package:recipes_app/model/meal_random/meal_random_model.dart';
+import 'package:recipes_app/model/meal_filter/meal_filter_model.dart';
 import 'package:recipes_app/model/search/search_model.dart';
+import 'package:retrofit/dio.dart';
 
 class CategoriesRepository {
   final MealService _mealService;
@@ -38,9 +40,29 @@ class SearchRepository {
 
   SearchRepository(this._service);
 
-  Future<SearchModel> searchMeal(String query) => _service.searchMeal(query);
+  Future<HttpResponse<SearchModel>> searchMeal(String query) => _service.searchMeal(query);
 }
  
+
+// class MealFilterRepository {
+//   final MealService _service;
+
+//   MealFilterRepository(this._service);
+
+//   Future<HttpResponse<MealFilterModel>> filterMeal(String query) => _service.filterMeal(query);
+
+  
+// }
+
+class MealFilterRepository {
+  final MealService _service;
+
+  MealFilterRepository(this._service);
+
+  Future<HttpResponse<MealFilterModel>> filterMeal(String query) => _service.filterMeal(query);
+
+  Future<HttpResponse<ListCategoryModel>> listCategoryMeal() => _service.listCategoryMeal();
+}
 
 
 

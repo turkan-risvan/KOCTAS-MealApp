@@ -21,20 +21,20 @@ class _MealService implements MealService {
   String? baseUrl;
 
   @override
-  Future<SearchModel> searchMeal(String query) async {
+  Future<HttpResponse<SearchModel>> searchMeal(String query) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'f': query};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<SearchModel>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<SearchModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/search.php?f=a',
+              '/search.php',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -44,7 +44,8 @@ class _MealService implements MealService {
               baseUrl,
             ))));
     final _value = SearchModel.fromJson(_result.data!);
-    return _value;
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
   }
 
   @override
@@ -88,7 +89,7 @@ class _MealService implements MealService {
     )
             .compose(
               _dio.options,
-              '/random.php',
+              'random.php',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -115,7 +116,7 @@ class _MealService implements MealService {
     )
             .compose(
               _dio.options,
-              '/categories.php',
+              'categories.php',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -126,6 +127,62 @@ class _MealService implements MealService {
             ))));
     final _value = CategoriesModel.fromJson(_result.data!);
     return _value;
+  }
+
+  @override
+  Future<HttpResponse<MealFilterModel>> filterMeal(String query) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'c': query};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<MealFilterModel>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/filter.php',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = MealFilterModel.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<ListCategoryModel>> listCategoryMeal() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<ListCategoryModel>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/list.php?c=list',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = ListCategoryModel.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
