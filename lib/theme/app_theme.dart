@@ -18,10 +18,10 @@ class AppTheme {
       drawerTheme: DrawerThemeData(
         backgroundColor: AppColor.colorScheme.background,
       ),
-      iconTheme: IconThemeData(
+      iconTheme: const IconThemeData(
         color: AppColor.textColor,
       ),
-      inputDecorationTheme: InputDecorationTheme(
+      inputDecorationTheme: const InputDecorationTheme(
         prefixIconColor: AppColor.textColor,
         suffixIconColor: AppColor.textColor,
         labelStyle: TextStyle(

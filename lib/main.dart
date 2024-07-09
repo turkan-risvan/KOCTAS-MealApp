@@ -4,8 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:provider/provider.dart';
 import 'package:recipes_app/data/repo/repository.dart';
 import 'package:recipes_app/data/service/meal_service.dart';
-import 'package:recipes_app/page/list_category/list_category_page.dart';
-import 'package:recipes_app/page/list_category/list_category_viewmodel.dart';
+import 'package:recipes_app/page/meal_filter/meal_filter_page.dart';
+import 'package:recipes_app/page/meal_filter/meal_filter_viewmodel.dart';
 
  
  

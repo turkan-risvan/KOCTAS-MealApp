@@ -9,7 +9,7 @@ class SearchPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Search Meals'),
+        title: const Text('Search Meals'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -21,12 +21,12 @@ class SearchPage extends StatelessWidget {
                 Provider.of<SearchViewModel>(context, listen: false)
                     .searchMeals(value);
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Search meals...',
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Consumer<SearchViewModel>(
               builder: (context, model, child) {
                 if (model.searchResults != null) {
@@ -49,7 +49,7 @@ class SearchPage extends StatelessWidget {
                     ),
                   );
                 } else {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
