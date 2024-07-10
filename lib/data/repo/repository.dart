@@ -21,6 +21,21 @@ class CategoriesRepository {
   }
 }
 
+// class MealDetailsRepository {
+//   final MealService _mealService;
+
+//   MealDetailsRepository(this._mealService);
+
+//   Future<MealDetailsModel> fetchMealDetails(String id) async {
+//     try {
+//       return await _mealService.getMealDetails(id);
+//     } catch (e) {
+//       throw Exception('Failed to load meal details: $e');
+//     }
+//   }
+// }
+
+
 class MealDetailsRepository {
   final MealService _mealService;
 
@@ -28,7 +43,8 @@ class MealDetailsRepository {
 
   Future<MealDetailsModel> fetchMealDetails(String id) async {
     try {
-      return await _mealService.getMealDetails(id);
+      final response = await _mealService.getMealDetails(id);
+      return response.data!;
     } catch (e) {
       throw Exception('Failed to load meal details: $e');
     }

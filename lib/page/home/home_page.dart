@@ -1,49 +1,48 @@
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import 'package:recipes_app/page/categories/categories_page.dart';
-// import 'package:recipes_app/page/meal_random/meal_random_page.dart';
-// import 'package:recipes_app/page/search/search_viewmodel.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:recipes_app/data/repo/repository.dart';
+import 'package:recipes_app/page/meal_filter/meal_filter_page.dart';
+import 'package:recipes_app/page/meal_filter/meal_filter_viewmodel.dart';
+import 'package:recipes_app/page/search/search_page.dart';
+import 'package:recipes_app/page/search/search_viewmodel.dart';
 
-// class HomePage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Home'),
-//       ),
-//       body: Column(
-//         crossAxisAlignment: CrossAxisAlignment.stretch,
-//         children: [
-//           Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: TextField(
-//               onChanged: (value) {
-//                 Provider.of<SearchViewModel>(context, listen: false).searchMeal(value);
-//               },
-//               decoration: InputDecoration(
-//                 hintText: 'Search meals...',
-//                 contentPadding: EdgeInsets.all(10),
-//               ),
-//             ),
-//           ),
-//           Expanded(
-//             child: Column(
-//               children: [
-//                 MealPage(), // Random Meal Widget
-//                 ElevatedButton(
-//                   onPressed: () {
-//                     Navigator.push(
-//                       context,
-//                       MaterialPageRoute(builder: (context) => CategoriesPage()),
-//                     );
-//                   },
-//                   child: Text('Choose Categories'),
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+class HomePage extends StatelessWidget {
+  final MealFilterRepository mealFilterRepository;
+  final SearchRepository searchRepository;
+
+  HomePage({required this.mealFilterRepository, required this.searchRepository});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home Page'),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ChangeNotifierProvider(
+              create: (context) => SearchViewModel(searchRepository),
+              child: Container(
+                height: 500,
+                  color: Colors.red,
+                width: double.infinity,
+                child: SearchPage()),
+            ),
+           
+
+           SizedBox(height: 10,),
+            ChangeNotifierProvider(
+              create: (context) => MealFilterViewModel(mealFilterRepository),
+              child: Container(
+              
+                height: 500,
+                width: double.infinity,
+                child: MealFilterPage()),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

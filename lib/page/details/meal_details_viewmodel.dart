@@ -1,31 +1,34 @@
 import 'package:flutter/material.dart';
-
- 
 import 'package:recipes_app/data/repo/repository.dart';
 import 'package:recipes_app/model/meal_details/meal_deails_model.dart';
-
+ 
 
 class MealDetailsViewModel extends ChangeNotifier {
   final MealDetailsRepository _repository;
   MealDetailsModel? _mealDetails;
-  bool _isLoading = false;
+  String? _errorMessage;
+
+  MealDetailsModel? get mealDetails => _mealDetails;
+  String? get errorMessage => _errorMessage;
 
   MealDetailsViewModel(this._repository);
 
-  MealDetailsModel? get mealDetails => _mealDetails;
-  bool get isLoading => _isLoading;
-
   Future<void> fetchMealDetails(String id) async {
-    _isLoading = true;
-    notifyListeners();
-
     try {
       _mealDetails = await _repository.fetchMealDetails(id);
     } catch (e) {
-      print('Failed to fetch meal details: $e');
+      _errorMessage = 'Failed to load meal details: $e';
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      if (!disposed) {
+        notifyListeners();
+      }
     }
+  }
+
+  bool disposed = false;
+  @override
+  void dispose() {
+    disposed = true;
+    super.dispose();
   }
 }

@@ -49,20 +49,20 @@ class _MealService implements MealService {
   }
 
   @override
-  Future<MealDetailsModel> getMealDetails(String id) async {
+  Future<HttpResponse<MealDetailsModel>> getMealDetails(String id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'i': id};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<MealDetailsModel>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<MealDetailsModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/lookup.php?i=52772',
+              '/lookup.php',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -72,7 +72,8 @@ class _MealService implements MealService {
               baseUrl,
             ))));
     final _value = MealDetailsModel.fromJson(_result.data!);
-    return _value;
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
   }
 
   @override

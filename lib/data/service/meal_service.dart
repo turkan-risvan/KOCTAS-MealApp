@@ -21,8 +21,10 @@ abstract class MealService {
     @Query("f") String query,
   );
 
-  @GET('/lookup.php?i=52772')
-  Future<MealDetailsModel> getMealDetails(@Query('i') String id);
+  @GET('/lookup.php')
+  Future<HttpResponse<MealDetailsModel>> getMealDetails(
+    @Query('i') String id);
+  
 
   @GET('random.php')
   Future<MealRandomModel> getRandomMeal();

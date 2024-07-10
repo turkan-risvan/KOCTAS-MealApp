@@ -8,9 +8,10 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Search Meals'),
-      ),
+     // backgroundColor: Colors.red,
+      // appBar: AppBar(
+      //   title: const Text('Search Meals'),
+      // ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -48,9 +49,11 @@ class SearchPage extends StatelessWidget {
                       },
                     ),
                   );
-                } else {
+                } 
+                else {
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: Text("yemek ara"),
+                    // child: CircularProgressIndicator(),
                   );
                 }
               },
