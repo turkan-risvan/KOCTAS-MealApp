@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipes_app/page/search/search_viewmodel.dart';
- 
-
+import 'package:recipes_app/page/details/meal_details_page.dart';
+import 'package:recipes_app/page/details/meal_details_viewmodel.dart';
+import 'package:recipes_app/data/service/meal_service.dart';
+import 'package:recipes_app/data/repo/repository.dart';
+import 'package:dio/dio.dart';
 
 class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     // backgroundColor: Colors.red,
-      // appBar: AppBar(
-      //   title: const Text('Search Meals'),
-      // ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -45,15 +44,26 @@ class SearchPage extends StatelessWidget {
                                       NetworkImage(meal.strMealThumb!),
                                 )
                               : null,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChangeNotifierProvider(
+                                  create: (context) => MealDetailsViewModel(
+                                    MealDetailsRepository(MealService(Dio())),
+                                  ),
+                                  child: MealDetailsPage(mealId: meal.idMeal!),
+                                ),
+                              ),
+                            );
+                          },
                         );
                       },
                     ),
                   );
-                } 
-                else {
+                } else {
                   return const Center(
                     child: Text("yemek ara"),
-                    // child: CircularProgressIndicator(),
                   );
                 }
               },
