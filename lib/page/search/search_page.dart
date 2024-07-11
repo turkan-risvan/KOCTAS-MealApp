@@ -7,7 +7,12 @@ import 'package:recipes_app/data/service/meal_service.dart';
 import 'package:recipes_app/data/repo/repository.dart';
 import 'package:dio/dio.dart';
 
-class SearchPage extends StatelessWidget {
+class SearchPage extends StatefulWidget {
+  @override
+  State<SearchPage> createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,50 +27,57 @@ class SearchPage extends StatelessWidget {
                     .searchMeals(value);
               },
               decoration: const InputDecoration(
-                hintText: 'Search meals...',
+                hintText: 'Yemek ara...',
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 20),
             Consumer<SearchViewModel>(
               builder: (context, model, child) {
-                if (model.searchResults != null) {
-                  return Expanded(
-                    child: ListView.builder(
-                      itemCount: model.searchResults!.meals!.length,
-                      itemBuilder: (context, index) {
-                        final meal = model.searchResults!.meals![index];
-                        return ListTile(
-                          title: Text(meal.strMeal ?? ''),
-                          subtitle: Text(meal.strCategory ?? ''),
-                          leading: meal.strMealThumb != null
-                              ? CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(meal.strMealThumb!),
-                                )
-                              : null,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ChangeNotifierProvider(
-                                  create: (context) => MealDetailsViewModel(
-                                    MealDetailsRepository(MealService(Dio())),
-                                  ),
-                                  child: MealDetailsPage(mealId: meal.idMeal!),
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  );
-                } else {
+                if (model.searchResults == null) {
                   return const Center(
-                    child: Text("yemek ara"),
+                    child: Text("Yemek ara"),
                   );
                 }
+
+                if (model.errorMessage != null) {
+                  return Text(
+                    model.errorMessage!,
+                    style: TextStyle(color: Colors.red),
+                  );
+                }
+
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: model.searchResults!.meals!.length,
+                    itemBuilder: (context, index) {
+                      final meal = model.searchResults!.meals![index];
+                      return ListTile(
+                        title: Text(meal.strMeal ?? ''),
+                        subtitle: Text(meal.strCategory ?? ''),
+                        leading: meal.strMealThumb != null
+                            ? CircleAvatar(
+                                backgroundImage:
+                                    NetworkImage(meal.strMealThumb!),
+                              )
+                            : null,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChangeNotifierProvider(
+                                create: (context) => MealDetailsViewModel(
+                                  MealDetailsRepository(MealService(Dio())),
+                                ),
+                                child: MealDetailsPage(mealId: meal.idMeal!),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                );
               },
             ),
           ],

@@ -18,7 +18,7 @@ abstract class MealService {
  
    @GET("/search.php")
   Future<HttpResponse<SearchModel>> searchMeal(
-    @Query("f") String query,
+    @Query("s") String query,
   );
 
   @GET('/lookup.php')

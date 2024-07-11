@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recipes_app/data/repo/repository.dart';
- 
 import 'package:recipes_app/model/search/search_model.dart';
- 
 
 class SearchViewModel extends ChangeNotifier {
   final SearchRepository _repository;
@@ -16,6 +14,12 @@ class SearchViewModel extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
 
   Future<void> searchMeals(String query) async {
+    if (query.isEmpty) {
+      _searchResults = null;
+      notifyListeners();
+      return;
+    }
+
     try {
       final response = await _repository.searchMeal(query);
       if (response.response.statusCode == 200) {
@@ -25,7 +29,6 @@ class SearchViewModel extends ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-      // Handle error
       _errorMessage = 'Error: $e';
       notifyListeners();
     }
