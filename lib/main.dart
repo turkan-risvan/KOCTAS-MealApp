@@ -14,8 +14,10 @@ void main() {
 
   runApp(
     MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Meal Search App',
       theme: ThemeData(
+        
         primarySwatch: Colors.blue,
       ),
       home: HomePage(

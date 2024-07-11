@@ -5,7 +5,6 @@ import 'package:recipes_app/data/service/meal_service.dart';
 import 'package:recipes_app/page/details/meal_details_page.dart';
 import 'package:recipes_app/page/details/meal_details_viewmodel.dart';
 import 'meal_filter_viewmodel.dart';
- 
 import 'package:dio/dio.dart';
 
 class MealFilterPage extends StatefulWidget {
@@ -31,24 +30,44 @@ class _MealFilterPageState extends State<MealFilterPage> {
         children: [
           Consumer<MealFilterViewModel>(
             builder: (context, viewModel, child) {
-              return DropdownButton<String>(
-                value: _selectedCategory,
-                hint: Text('Select a category'),
-                isExpanded: true,
-                items: viewModel.mealCategories?.meals?.map((meal) {
-                  return DropdownMenuItem<String>(
-                    value: meal.strCategory,
-                    child: Text(meal.strCategory ?? ''),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedCategory = value;
-                  });
-                  if (value != null) {
-                    viewModel.filterMeals(value);
-                  }
-                },
+              if (viewModel.mealCategories == null) {
+                return Center(child: CircularProgressIndicator());
+              }
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: viewModel.mealCategories!.meals!.map((meal) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _selectedCategory = meal.strCategory;
+                        });
+                        if (meal.strCategory != null) {
+                          viewModel.filterMeals(meal.strCategory!);
+                        }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        margin: EdgeInsets.symmetric(horizontal: 4),
+                        decoration: BoxDecoration(
+                          color: _selectedCategory == meal.strCategory
+                              ? Colors.orange
+                              : Colors.grey[200],
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          meal.strCategory ?? '',
+                          style: TextStyle(
+                            color: _selectedCategory == meal.strCategory
+                                ? Colors.white
+                                : Colors.black,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
               );
             },
           ),

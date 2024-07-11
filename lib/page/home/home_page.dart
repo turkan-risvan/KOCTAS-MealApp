@@ -81,9 +81,9 @@ class _HomePageState extends State<HomePage> {
         unselectedItemColor: Colors.grey, 
         onTap: _onItemTapped,
       ),
-      appBar: AppBar(
-        title: Text('Home Page'),
-      ),
+      // appBar: AppBar(
+      //   title: Text('Home Page'),
+      // ),
       body: _selectedIndex == 0
           ? SingleChildScrollView(
               child: Column(
