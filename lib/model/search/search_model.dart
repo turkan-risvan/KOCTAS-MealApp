@@ -1,5 +1,7 @@
+ 
 
 import 'package:json_annotation/json_annotation.dart';
+
 part 'search_model.g.dart';
 
 @JsonSerializable()
@@ -14,7 +16,6 @@ class SearchModel {
   Map<String, dynamic> toJson() => _$SearchModelToJson(this);
 
 }
-
 @JsonSerializable()
 class Meals {
   String? idMeal;
@@ -124,13 +125,13 @@ class Meals {
       this.strSource,
       this.strImageSource,
       this.strCreativeCommonsConfirmed,
-      this.dateModified
-      });
+      this.dateModified});
+
+ 
 
  
  factory Meals.fromJson(Map<String, dynamic> json) =>
       _$MealsFromJson(json);
  
   Map<String, dynamic> toJson() => _$MealsToJson(this);
-
 }

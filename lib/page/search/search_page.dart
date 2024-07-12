@@ -31,6 +31,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Icon(Icons.drag_handle, color: Colors.orange),
         title: _isSearching
             ? TextField(
                 controller: _searchController,
@@ -43,12 +44,12 @@ class _SearchPageState extends State<SearchPage> {
                   border: InputBorder.none,
                 ),
               )
-            : Text('*'),
+            : const Text(''),
         actions: [
           IconButton(
             icon: Icon(
               _isSearching ? Icons.clear : Icons.search,
-              color: Color(0xffff774d),
+              color: const Color(0xffff774d),
             ),
             onPressed: () {
               setState(() {
@@ -67,14 +68,14 @@ class _SearchPageState extends State<SearchPage> {
       body: Stack(
         children: [
           ChangeNotifierProvider(
-            create: (context) =>MealFilterViewModel(widget.mealFilterRepository),
+            create: (context) =>
+                MealFilterViewModel(widget.mealFilterRepository),
             child: Container(
               height: 500,
               width: double.infinity,
               child: MealFilterPage(),
             ),
           ),
-               
           if (_isSearching)
             Positioned(
               top: 0,
@@ -92,7 +93,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget _buildInitialContent() {
-    return Center(
+    return const Center(
       //child: Container(color: Colors.red,),
       //child: Text("Press the search button to start searching."),
     );
@@ -103,23 +104,36 @@ class _SearchPageState extends State<SearchPage> {
       builder: (context, model, child) {
         if (model.searchResults == null) {
           return const Center(
-              //  child: CircularProgressIndicator(),
-              );
+            child: Text(
+              'Yemek bulunamadı',
+              style: TextStyle(fontSize: 18, color: Colors.black54),
+            ),
+          );
         }
 
         if (model.errorMessage != null) {
           return Center(
             child: Text(
               model.errorMessage!,
-              style: TextStyle(color: Colors.red),
+              style: const TextStyle(color: Colors.red),
+            ),
+          );
+        }
+
+        final meals = model.searchResults!.meals;
+        if (meals == null || meals.isEmpty) {
+          return const Center(
+            child: Text(
+              'Yemek bulunamadı',
+              style: TextStyle(fontSize: 18, color: Colors.black54),
             ),
           );
         }
 
         return ListView.builder(
-          itemCount: model.searchResults!.meals!.length,
+          itemCount: meals.length,
           itemBuilder: (context, index) {
-            final meal = model.searchResults!.meals![index];
+            final meal = meals[index];
             return ListTile(
               title: Text(meal.strMeal ?? ''),
               subtitle: Text(meal.strCategory ?? ''),

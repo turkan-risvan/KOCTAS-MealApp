@@ -23,7 +23,7 @@ class _MealService implements MealService {
   @override
   Future<HttpResponse<SearchModel>> searchMeal(String query) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'f': query};
+    final queryParameters = <String, dynamic>{r's': query};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
