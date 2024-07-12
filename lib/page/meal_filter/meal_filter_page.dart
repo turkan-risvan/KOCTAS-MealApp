@@ -31,7 +31,7 @@ class _MealFilterPageState extends State<MealFilterPage> {
           Consumer<MealFilterViewModel>(
             builder: (context, viewModel, child) {
               if (viewModel.mealCategories == null) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               }
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,

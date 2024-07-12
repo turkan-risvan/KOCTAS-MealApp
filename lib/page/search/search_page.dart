@@ -26,6 +26,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 248, 247, 246),
         title: _isSearching
             ? TextField(
                 controller: _searchController,
@@ -38,7 +39,7 @@ class _SearchPageState extends State<SearchPage> {
                   border: InputBorder.none,
                 ),
               )
-            : Text('Recipes Search'),
+            : Text(''),
         actions: [
           IconButton(
             icon: Icon(_isSearching ? Icons.clear : Icons.search),
@@ -56,13 +57,15 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ],
       ),
+      
       body: _isSearching ? _buildSearchResults() : _buildInitialContent(),
     );
   }
 
   Widget _buildInitialContent() {
     return Center(
-      child: Text("Press the search button to start searching."),
+      //child: Container(color: Colors.red,),
+      //child: Text("Press the search button to start searching."),
     );
   }
 
@@ -71,7 +74,7 @@ class _SearchPageState extends State<SearchPage> {
       builder: (context, model, child) {
         if (model.searchResults == null) {
           return const Center(
-            child: CircularProgressIndicator(),
+          //  child: CircularProgressIndicator(),
           );
         }
 
@@ -79,7 +82,7 @@ class _SearchPageState extends State<SearchPage> {
           return Center(
             child: Text(
               model.errorMessage!,
-              style: TextStyle(color: Colors.red),
+              style: TextStyle(color: Color.fromARGB(255, 235, 233, 232)),
             ),
           );
         }

@@ -18,6 +18,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  bool _isSearching = false;
 
   late List<Widget> _pages;
 
@@ -29,7 +30,6 @@ class _HomePageState extends State<HomePage> {
         mealFilterRepository: widget.mealFilterRepository,
         searchRepository: widget.searchRepository,
       ),
-     FavoritesPage(),
       FavoritesPage(),
       ProfilePage(),
     ];
@@ -56,6 +56,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: AppBar(
+      //   title: Text('Home Page'),
+      //   actions: [
+         
+      //   ],
+      // ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.amber,
         items: const <BottomNavigationBarItem>[
@@ -76,45 +82,40 @@ class _HomePageState extends State<HomePage> {
             label: 'Profile',
           ),
         ],
-         currentIndex: _selectedIndex,
+        currentIndex: _selectedIndex,
         selectedItemColor: Colors.orange,
-        unselectedItemColor: Colors.grey, 
+        unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
       ),
-      // appBar: AppBar(
-      //   title: Text('Home Page'),
-      // ),
-      body: _selectedIndex == 0
-          ? SingleChildScrollView(
-              child: Column(
-                children: [
-                  ChangeNotifierProvider(
-                    create: (context) => SearchViewModel(widget.searchRepository),
-                    child: Container(
-                      height: 500,
-                      color: Colors.red,
-                      width: double.infinity,
-                      child: SearchPage(),
-                    ),
-                  ),
-                  SizedBox(height: 10,),
-                  ChangeNotifierProvider(
-                    create: (context) => MealFilterViewModel(widget.mealFilterRepository),
-                    child: Container(
-                      height: 500,
-                      width: double.infinity,
-                      child: MealFilterPage(),
-                    ),
-                  ),
-                ],
+      body:  _selectedIndex == 0
+              ? SingleChildScrollView(
+                  child: Column(
+                    children: [
+                         ChangeNotifierProvider(
+              create: (context) => SearchViewModel(widget.searchRepository),
+              child: Container(
+                height: 80,
+                color: Colors.orange,
+                width: double.infinity,
+                child: SearchPage(),
               ),
-            )
-          : _pages[_selectedIndex],
+            ),
+                      const SizedBox(height: 10),
+                      ChangeNotifierProvider(
+                        create: (context) => MealFilterViewModel(widget.mealFilterRepository),
+                        child: Container(
+                          height: 500,
+                          width: double.infinity,
+                          child: MealFilterPage(),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : _pages[_selectedIndex],
     );
   }
 }
-
- 
 
 class FavoritesPage extends StatelessWidget {
   @override
