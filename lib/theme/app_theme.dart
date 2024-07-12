@@ -1,38 +1,66 @@
 import 'package:flutter/material.dart';
-import 'app_color.dart';
+import 'package:recipes_app/theme/app_color.dart';
+ 
 
-class AppTheme {
-  static ThemeData get lightTheme {
-    return ThemeData(
-      useMaterial3: true,
-      colorScheme: AppColor.colorScheme,
-      primaryColor: AppColor.colorScheme.primary,
-      scaffoldBackgroundColor: AppColor.colorScheme.background,
-      textTheme: AppColor.poppinsTextTheme().apply(
-        bodyColor: AppColor.textColor,
-      ),
-      appBarTheme: AppBarTheme(
-        backgroundColor: AppColor.colorScheme.background,
-        foregroundColor: AppColor.textColor,
-      ),
-      drawerTheme: DrawerThemeData(
-        backgroundColor: AppColor.colorScheme.background,
-      ),
-      iconTheme: const IconThemeData(
-        color: AppColor.textColor,
-      ),
-      inputDecorationTheme: const InputDecorationTheme(
-        prefixIconColor: AppColor.textColor,
-        suffixIconColor: AppColor.textColor,
-        labelStyle: TextStyle(
-          color: AppColor.textColor,
-        ),
-      ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-            backgroundColor: AppColor.colorScheme.primary,
-            foregroundColor: AppColor.colorScheme.background),
-      ),
-    );
-  }
-}
+final ThemeData lightTheme = ThemeData(
+  primaryColor: AppColors.primaryColor,
+  primaryColorDark: AppColors.primaryVariantColor,
+   
+  scaffoldBackgroundColor: AppColors.backgroundColor,
+  appBarTheme: const AppBarTheme(
+    backgroundColor: AppColors.primaryColor,
+    foregroundColor: Colors.white,
+    iconTheme: IconThemeData(color: Colors.orange),
+    titleTextStyle: TextStyle(color: Colors.white),
+  ),
+  textTheme: const TextTheme(
+    titleLarge: TextStyle(
+      fontSize: 20.0,
+      fontWeight: FontWeight.bold,
+      color: Colors.black87,
+    ),
+    bodyLarge: TextStyle(
+      fontSize: 16.0,
+      color: Colors.black,
+    ),
+    // Define other text styles here
+  ),
+  iconTheme: const IconThemeData(
+    color: AppColors.primaryColor,
+    size: 24.0,
+  ),
+  // Define other theme properties here
+);
+
+final ThemeData darkTheme = ThemeData(
+  primaryColor: AppColors.primaryColor,
+  primaryColorDark: AppColors.primaryVariantColor,
+  
+  scaffoldBackgroundColor: Colors.black,
+  appBarTheme: const AppBarTheme(
+    backgroundColor: Colors.black,
+    foregroundColor: Colors.white,
+    iconTheme: IconThemeData(color: Colors.orange),
+    titleTextStyle: TextStyle(color: Colors.white),
+  ),
+  textTheme: const TextTheme(
+    titleLarge: TextStyle(
+      fontSize: 20.0,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    ),
+    bodyLarge: TextStyle(
+      fontSize: 16.0,
+      color: Colors.white,
+    ),
+    // Define other text styles here
+  ),
+  iconTheme: const IconThemeData(
+    color: AppColors.primaryColor,
+    size: 24.0,
+  ),
+  // Define other theme properties here
+);
+
+// Default theme mode
+ThemeMode currentThemeMode = ThemeMode.light;

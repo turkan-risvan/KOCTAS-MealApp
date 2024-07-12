@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                      ChangeNotifierProvider(
                             create: (context) => SearchViewModel(widget.searchRepository),
                             child: Container(
-                              height: 380,
+                              height: 650,
                               color: Colors.orange,
                               width: double.infinity,
                               child: SearchPage(mealFilterRepository: widget.mealFilterRepository),

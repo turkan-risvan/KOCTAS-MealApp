@@ -80,48 +80,77 @@ class _MealFilterPageState extends State<MealFilterPage> {
                 );
               }
               return Expanded(
-                child: ListView.builder(
-                  itemCount: viewModel.filterResults!.meals!.length,
-                  itemBuilder: (context, index) {
-                    final meal = viewModel.filterResults!.meals![index];
-                    return Card(
-                      
-                      margin: EdgeInsets.symmetric(vertical: 8),
-                      elevation: 4,
-                      child: ListTile(
-                        leading: meal.strMealThumb != null
-                            ? Image.network(
-                                meal.strMealThumb!,
-                                width: 80,
-                                height: 80,
-                                fit: BoxFit.cover,
-                              )
-                            : SizedBox.shrink(),
-                        title: Text(
-                          meal.strMeal ?? '',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        subtitle: Text(
-                          meal.idMeal ?? '',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ChangeNotifierProvider(
-                                create: (context) => MealDetailsViewModel(
-                                  MealDetailsRepository(MealService(Dio())),
-                                ),
-                                child: MealDetailsPage(mealId: meal.idMeal!),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  },
-                ),
+                child: GridView.builder(
+  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 2,
+    childAspectRatio: 0.75,
+    crossAxisSpacing: 20,
+    mainAxisSpacing: 20,
+  ),
+  shrinkWrap: true,
+  itemCount: viewModel.filterResults!.meals!.length,
+  itemBuilder: (context, index) {
+    final meal = viewModel.filterResults!.meals![index];
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ChangeNotifierProvider(
+              create: (context) => MealDetailsViewModel(
+                MealDetailsRepository(MealService(Dio())),
+              ),
+              child: MealDetailsPage(mealId: meal.idMeal!),
+            ),
+          ),
+        );
+      },
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+                child: meal.strMealThumb != null
+                    ? Image.network(
+                        meal.strMealThumb!,
+                        fit: BoxFit.cover,
+                      )
+                    : Placeholder(), // Placeholder for images not available
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    meal.strMeal ?? '',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    meal.idMeal ?? '',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  },
+),
+
+             
               );
             },
           ),

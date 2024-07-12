@@ -31,7 +31,8 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.drag_handle, color: Colors.orange),
+        leading: Icon(Icons.drag_handle, color: Theme.of(context).iconTheme.color),
+
         title: _isSearching
             ? TextField(
                 controller: _searchController,
@@ -70,10 +71,25 @@ class _SearchPageState extends State<SearchPage> {
           ChangeNotifierProvider(
             create: (context) =>
                 MealFilterViewModel(widget.mealFilterRepository),
-            child: Container(
-              height: 500,
-              width: double.infinity,
-              child: MealFilterPage(),
+            child: Column(
+              children: [
+                Container(
+                  width: 300,
+                  height: 140,
+                  decoration: BoxDecoration(
+                    color: Colors.orange,
+                    borderRadius: BorderRadius.circular(20)
+                  ),
+                ),
+                SizedBox(height: 10,),
+                SingleChildScrollView(
+                  child: Container(
+                    height: 400,
+                    width: double.infinity,
+                    child: MealFilterPage(),
+                  ),
+                ),
+              ],
             ),
           ),
           if (_isSearching)
@@ -83,10 +99,11 @@ class _SearchPageState extends State<SearchPage> {
               right: 0,
               child: Container(
                 color: Colors.white,
-                height: 200,
+                height: 300,
                 child: _buildSearchResults(),
               ),
             ),
+
         ],
       ),
     );
