@@ -10,7 +10,9 @@ class MealDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffff774d),
       appBar: AppBar(
+       backgroundColor: Color(0xffff774d),
         title: Text('Meal Details'),
       ),
       body: Consumer<MealDetailsViewModel>(
@@ -34,22 +36,32 @@ class MealDetailsPage extends StatelessWidget {
 
           final meal = viewModel.mealDetails!.meals!.first;
           return SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  if (meal.strMealThumb != null)
-                    Image.network(meal.strMealThumb!),
-                  SizedBox(height: 16),
-                  Text(
-                    meal.strMeal ?? '',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (meal.strMealThumb != null)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.network(meal.strMealThumb!),
                   ),
-                  SizedBox(height: 8),
-                  Text(meal.strInstructions ?? ''),
-                ],
-              ),
+                
+                Container(
+                   decoration: BoxDecoration(
+                color: Colors.white,
+                               borderRadius: BorderRadius.only(topRight: Radius.circular(50))
+                              ),
+                  child: Column(
+                    children: [
+                      Text(
+                        meal.strMeal ?? '',
+                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 8),
+                      Text(meal.strInstructions ?? ''),
+                    ],
+                  ),
+                ),
+              ],
             ),
           );
         },

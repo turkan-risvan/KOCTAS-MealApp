@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipes_app/page/meal_filter/meal_filter_page.dart';
+import 'package:recipes_app/page/meal_filter/meal_filter_viewmodel.dart';
 import 'package:recipes_app/page/search/search_viewmodel.dart';
 import 'package:recipes_app/page/details/meal_details_page.dart';
 import 'package:recipes_app/page/details/meal_details_viewmodel.dart';
@@ -8,6 +10,9 @@ import 'package:recipes_app/data/repo/repository.dart';
 import 'package:dio/dio.dart';
 
 class SearchPage extends StatefulWidget {
+  final MealFilterRepository mealFilterRepository;
+
+  const SearchPage({super.key, required this.mealFilterRepository});
   @override
   _SearchPageState createState() => _SearchPageState();
 }
@@ -26,7 +31,6 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 248, 247, 246),
         title: _isSearching
             ? TextField(
                 controller: _searchController,
@@ -39,26 +43,51 @@ class _SearchPageState extends State<SearchPage> {
                   border: InputBorder.none,
                 ),
               )
-            : Text(''),
+            : Text('*'),
         actions: [
           IconButton(
-            icon: Icon(_isSearching ? Icons.clear : Icons.search),
+            icon: Icon(
+              _isSearching ? Icons.clear : Icons.search,
+              color: Color(0xffff774d),
+            ),
             onPressed: () {
               setState(() {
                 _isSearching = !_isSearching;
                 if (!_isSearching) {
                   // Clear search results when closing search
                   Provider.of<SearchViewModel>(context, listen: false);
-                      
-                  _searchController.clear();  // Clear the search input field
+
+                  _searchController.clear(); // Clear the search input field
                 }
               });
             },
           ),
         ],
       ),
-      
-      body: _isSearching ? _buildSearchResults() : _buildInitialContent(),
+      body: Stack(
+        children: [
+          ChangeNotifierProvider(
+            create: (context) =>MealFilterViewModel(widget.mealFilterRepository),
+            child: Container(
+              height: 500,
+              width: double.infinity,
+              child: MealFilterPage(),
+            ),
+          ),
+               
+          if (_isSearching)
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                color: Colors.white,
+                height: 200,
+                child: _buildSearchResults(),
+              ),
+            ),
+        ],
+      ),
     );
   }
 
@@ -74,15 +103,15 @@ class _SearchPageState extends State<SearchPage> {
       builder: (context, model, child) {
         if (model.searchResults == null) {
           return const Center(
-          //  child: CircularProgressIndicator(),
-          );
+              //  child: CircularProgressIndicator(),
+              );
         }
 
         if (model.errorMessage != null) {
           return Center(
             child: Text(
               model.errorMessage!,
-              style: TextStyle(color: Color.fromARGB(255, 235, 233, 232)),
+              style: TextStyle(color: Colors.red),
             ),
           );
         }

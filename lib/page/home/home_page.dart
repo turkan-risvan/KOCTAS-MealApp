@@ -88,30 +88,41 @@ class _HomePageState extends State<HomePage> {
         onTap: _onItemTapped,
       ),
       body:  _selectedIndex == 0
-              ? SingleChildScrollView(
-                  child: Column(
-                    children: [
-                         ChangeNotifierProvider(
-              create: (context) => SearchViewModel(widget.searchRepository),
-              child: Container(
-                height: 80,
-                color: Colors.orange,
-                width: double.infinity,
-                child: SearchPage(),
-              ),
-            ),
-                      const SizedBox(height: 10),
-                      ChangeNotifierProvider(
-                        create: (context) => MealFilterViewModel(widget.mealFilterRepository),
-                        child: Container(
-                          height: 500,
-                          width: double.infinity,
-                          child: MealFilterPage(),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
+              ? Column(
+                children: [
+                     ChangeNotifierProvider(
+                            create: (context) => SearchViewModel(widget.searchRepository),
+                            child: Container(
+                              height: 380,
+                              color: Colors.orange,
+                              width: double.infinity,
+                              child: SearchPage(mealFilterRepository: widget.mealFilterRepository),
+                            ),
+                          ),
+                  const SizedBox(height: 10),
+                  // Column(
+                  //   children: [
+                  //     ChangeNotifierProvider(
+                  //       create: (context) => MealFilterViewModel(widget.mealFilterRepository),
+                  //       child: Container(
+                  //         height: 500,
+                  //         width: double.infinity,
+                  //         child: MealFilterPage(),
+                  //       ),
+                  //     ),
+                  //     Container(
+                  //     height: 200,
+                  //     width: 300,
+                     
+                  //     decoration: BoxDecoration(
+                  //        color: Color(0xffff774d),
+                  //       borderRadius: BorderRadius.circular(10)
+                  //     ),
+                  //     )
+                  //   ],
+                  // ),
+                ],
+              )
               : _pages[_selectedIndex],
     );
   }

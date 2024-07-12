@@ -46,22 +46,16 @@ class _MealFilterPageState extends State<MealFilterPage> {
                           viewModel.filterMeals(meal.strCategory!);
                         }
                       },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        margin: EdgeInsets.symmetric(horizontal: 4),
-                        decoration: BoxDecoration(
-                          color: _selectedCategory == meal.strCategory
-                              ? Colors.orange
-                              : Colors.grey[200],
-                          borderRadius: BorderRadius.circular(20),
-                        ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 30.0),
                         child: Text(
                           meal.strCategory ?? '',
                           style: TextStyle(
                             color: _selectedCategory == meal.strCategory
-                                ? Colors.white
+                                ? Colors.orange
                                 : Colors.black,
                             fontSize: 16,
+                            fontWeight: FontWeight.bold
                           ),
                         ),
                       ),
@@ -91,6 +85,7 @@ class _MealFilterPageState extends State<MealFilterPage> {
                   itemBuilder: (context, index) {
                     final meal = viewModel.filterResults!.meals![index];
                     return Card(
+                      
                       margin: EdgeInsets.symmetric(vertical: 8),
                       elevation: 4,
                       child: ListTile(
