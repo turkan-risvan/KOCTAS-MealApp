@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipes_app/page/drawer_page.dart';
+ 
+import 'package:recipes_app/page/home/home_page.dart';
 import 'package:recipes_app/page/meal_filter/meal_filter_page.dart';
 import 'package:recipes_app/page/meal_filter/meal_filter_viewmodel.dart';
+import 'package:recipes_app/page/meal_random/meal_random_page.dart';
+import 'package:recipes_app/page/meal_random/meal_random_viewmodel.dart';
 import 'package:recipes_app/page/search/search_viewmodel.dart';
 import 'package:recipes_app/page/details/meal_details_page.dart';
 import 'package:recipes_app/page/details/meal_details_viewmodel.dart';
@@ -11,8 +16,9 @@ import 'package:dio/dio.dart';
 
 class SearchPage extends StatefulWidget {
   final MealFilterRepository mealFilterRepository;
+  final RandomRepository randomRepository;
 
-  const SearchPage({super.key, required this.mealFilterRepository});
+  const SearchPage({super.key, required this.mealFilterRepository, required this.randomRepository});
   @override
   _SearchPageState createState() => _SearchPageState();
 }
@@ -33,9 +39,18 @@ class _SearchPageState extends State<SearchPage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+     
       appBar: AppBar(
         
-        leading: const Icon(Icons.drag_handle, color: Colors.orange),
+        leading:  const Icon(Icons.drag_handle, color: Colors.orange),
+        
+        // IconButton(onPressed: () {
+        //   setState(() {
+        //     DrawerPage();
+        //   });
+        // }, icon: const Icon(Icons.drag_handle, color: Colors.orange)),
+      
+        
         title: _isSearching
             ? TextField(
                 controller: _searchController,
@@ -71,6 +86,7 @@ class _SearchPageState extends State<SearchPage> {
       ),
       body: Stack(
         children: [
+         
           ChangeNotifierProvider(
             create: (context) =>
                 MealFilterViewModel(widget.mealFilterRepository),
@@ -80,6 +96,7 @@ class _SearchPageState extends State<SearchPage> {
                 Container(
                   width: screenWidth * 0.8,
                   height: screenHeight * 0.21,
+                  child:ChangeNotifierProvider(create: (context) => RandomMealViewModel(widget.randomRepository), child: MealRandomPage(),) ,
                   decoration: BoxDecoration(
                     color: Colors.orange,
                     borderRadius: BorderRadius.circular(20),
@@ -92,6 +109,8 @@ class _SearchPageState extends State<SearchPage> {
               ],
             ),
           ),
+
+       
           if (_isSearching)
             Positioned(
               top: 0,

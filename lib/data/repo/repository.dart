@@ -1,25 +1,34 @@
  
 import 'package:recipes_app/data/service/meal_service.dart';
-import 'package:recipes_app/model/categories/categories_model.dart';
+import 'package:recipes_app/model/area/area_model.dart';
+import 'package:recipes_app/model/area_filter/area_filter_model.dart';
+ 
+ 
+ 
+ 
 import 'package:recipes_app/model/list_category/list_category_model.dart';
 import 'package:recipes_app/model/meal_details/meal_deails_model.dart';
 import 'package:recipes_app/model/meal_filter/meal_filter_model.dart';
+ 
+import 'package:recipes_app/model/meal_random/meal_random_model.dart';
 import 'package:recipes_app/model/search/search_model.dart';
+ 
+ 
 import 'package:retrofit/dio.dart';
 
-class CategoriesRepository {
-  final MealService _mealService;
+// class CategoriesRepository {
+//   final MealService _mealService;
 
-  CategoriesRepository(this._mealService);
+//   CategoriesRepository(this._mealService);
 
-  Future<CategoriesModel> fetchCategories() async {
-    try {
-      return await _mealService.getCategories();
-    } catch (e) {
-      throw Exception('Failed to load categories: $e');
-    }
-  }
-}
+//   Future<CategoriesModel> fetchCategories() async {
+//     try {
+//       return await _mealService.getCategories();
+//     } catch (e) {
+//       throw Exception('Failed to load categories: $e');
+//     }
+//   }
+// }
 
  
 
@@ -38,6 +47,9 @@ class MealDetailsRepository {
     }
   }
 }
+
+
+
 
 class SearchRepository {
   final MealService _service;
@@ -61,12 +73,25 @@ class MealFilterRepository {
 }
 
 
-class AreaRepository {
-  final MealService mealService;
+class AreaFilterRepository {
+  final MealService _service;
 
-  AreaRepository(this.mealService);
+  AreaFilterRepository(this._service);
+
+  Future<HttpResponse<AreaFilterModel>> filterArea(String query) => _service.filterArea(query);
+
+  Future<HttpResponse<AreaModel>> listAreaMeal() => _service.listAreaMeal();
+}
+
+
 
  
+
+ class RandomRepository {
+  final MealService _service;
+
+  RandomRepository(this._service);
+  Future<HttpResponse<MealRandomModel>> getRandomMeal() =>_service.getRandomMeal();
 }
 
 

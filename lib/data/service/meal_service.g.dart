@@ -77,20 +77,20 @@ class _MealService implements MealService {
   }
 
   @override
-  Future<MealRandomModel> getRandomMeal() async {
+  Future<HttpResponse<MealRandomModel>> getRandomMeal() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<MealRandomModel>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<MealRandomModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              'random.php',
+              '/random.php',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -100,24 +100,25 @@ class _MealService implements MealService {
               baseUrl,
             ))));
     final _value = MealRandomModel.fromJson(_result.data!);
-    return _value;
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
   }
 
   @override
-  Future<CategoriesModel> getCategories() async {
+  Future<HttpResponse<ListCategoryModel>> listCategoryMeal() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<CategoriesModel>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<ListCategoryModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              'categories.php',
+              '/list.php?c=list',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -126,8 +127,9 @@ class _MealService implements MealService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final _value = CategoriesModel.fromJson(_result.data!);
-    return _value;
+    final _value = ListCategoryModel.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
   }
 
   @override
@@ -159,20 +161,20 @@ class _MealService implements MealService {
   }
 
   @override
-  Future<HttpResponse<ListCategoryModel>> listCategoryMeal() async {
+  Future<HttpResponse<AreaModel>> listAreaMeal() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<HttpResponse<ListCategoryModel>>(Options(
+        _setStreamType<HttpResponse<AreaModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/list.php?c=list',
+              '/list.php?a=list',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -181,7 +183,35 @@ class _MealService implements MealService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final _value = ListCategoryModel.fromJson(_result.data!);
+    final _value = AreaModel.fromJson(_result.data!);
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<AreaFilterModel>> filterArea(String query) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'a': query};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<AreaFilterModel>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/filter.php',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = AreaFilterModel.fromJson(_result.data!);
     final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }

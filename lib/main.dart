@@ -11,6 +11,8 @@ void main() {
   final mealService = MealService(dio);
   final mealFilterRepository = MealFilterRepository(mealService);
   final searchRepository = SearchRepository(mealService);
+  final randomRepository = RandomRepository(mealService);
+  final areaFilterRepository =AreaFilterRepository(mealService);
 
   runApp(
     MaterialApp(
@@ -23,6 +25,8 @@ void main() {
       home: HomePage(
         mealFilterRepository: mealFilterRepository,
         searchRepository: searchRepository,
+                randomRepository: randomRepository, areaFilterRepository: areaFilterRepository,
+          
       ),
     ),
   );

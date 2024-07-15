@@ -10,9 +10,9 @@ class MealDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffff774d),
+      backgroundColor: Colors.orange,
       appBar: AppBar(
-       backgroundColor: Color(0xffff774d),
+       backgroundColor: Colors.orange,
         title: Text('Meal Details'),
       ),
       body: Consumer<MealDetailsViewModel>(

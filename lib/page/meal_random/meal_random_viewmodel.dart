@@ -1,30 +1,30 @@
-// import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:recipes_app/data/repo/repository.dart';
+import 'package:recipes_app/model/meal_random/meal_random_model.dart';
  
-// import 'package:recipes_app/data/repo/repository.dart';
-// import 'package:recipes_app/model/meal_random/meal_random_model.dart';
- 
 
-// class MealRandomViewModel extends ChangeNotifier {
-//   final MealRepository _mealRepository;
-//   MealRandomModel? meal;
-//   bool isLoading = false;
-//   String? errorMessage;
+class RandomMealViewModel extends ChangeNotifier {
+  final RandomRepository _repository;
 
-//   MealRandomViewModel(this._mealRepository);
+  MealRandomModel? randomMeal;
+  bool isLoading = false;
+  String? errorMessage;
 
-//   Future<void> fetchRandomMeal() async {
-//     isLoading = true;
-//     notifyListeners();
+  RandomMealViewModel(this._repository);
 
-//     try {
-//       meal = await _mealRepository.fetchRandomMeal();
-//       errorMessage = null;
-//     } catch (error) {
-//       errorMessage = error.toString();
-//       meal = null;
-//     } finally {
-//       isLoading = false;
-//       notifyListeners();
-//     }
-//   }
-// }
+  Future<void> fetchRandomMeal() async {
+    isLoading = true;
+    errorMessage = null;
+    notifyListeners();
+
+    try {
+      final response = await _repository.getRandomMeal();
+      randomMeal = response.data;
+    } catch (e) {
+      errorMessage = 'Failed to fetch random meal: $e';
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+}

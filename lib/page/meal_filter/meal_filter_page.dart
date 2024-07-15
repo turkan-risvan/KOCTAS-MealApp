@@ -115,7 +115,7 @@ class _MealFilterPageState extends State<MealFilterPage> {
                                         meal.strMealThumb!,
                                         fit: BoxFit.cover,
                                       )
-                                    : const Placeholder(), 
+                                    : const Placeholder(), // Placeholder for images not available
                               ),
                             ),
                             Padding(

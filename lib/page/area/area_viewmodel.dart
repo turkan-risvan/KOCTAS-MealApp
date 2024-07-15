@@ -1,23 +1,47 @@
-// import 'package:flutter/material.dart';
-// import 'package:recipes_app/data/repo/repository.dart';
-// import 'package:recipes_app/data/service/meal_service.dart';
-// import 'package:recipes_app/models/area_model.dart';
-// import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:recipes_app/data/repo/repository.dart';
+ 
+import 'package:recipes_app/model/area/area_model.dart';
+import 'package:recipes_app/model/area_filter/area_filter_model.dart';
+ 
+ 
+ 
+ 
 
-// class AreaViewModel extends ChangeNotifier {
-//   List<Area>? areas;
-//   String? errorMessage;
+class AreaFilterViewModel extends ChangeNotifier {
+  final AreaFilterRepository _repository;
 
-//   final repository = AreaRepository(MealService(Dio()));
+  AreaFilterViewModel(this._repository);
 
-//   Future<void> fetchAreas() async {
-//     try {
-//       final result = await repository.fetchAreas();
-//       areas = result;
-//       errorMessage = null;
-//     } catch (error) {
-//       errorMessage = error.toString();
-//     }
-//     notifyListeners();
-//   }
-// }
+  AreaModel? _areaCategories;
+  AreaFilterModel? _filterResults;
+  String? _errorMessage;
+
+  AreaModel? get areaCategories => _areaCategories;
+  AreaFilterModel? get filterResults => _filterResults;
+  String? get errorMessage => _errorMessage;
+
+  Future<void> listAreas() async {
+    try {
+      final response = await _repository.listAreaMeal();
+      _areaCategories = response.data;
+      _errorMessage = null;
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = "Error: $e";
+      notifyListeners();
+    }
+  }
+
+  Future<void> filterAreas(String category) async {
+    try {
+      final response = await _repository.filterArea(category);
+      _filterResults = response.data;
+      _errorMessage = null;
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = "Error: $e";
+      notifyListeners();
+    }
+  }
+}

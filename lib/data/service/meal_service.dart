@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:recipes_app/model/categories/categories_model.dart';
+import 'package:recipes_app/model/area/area_model.dart';
+import 'package:recipes_app/model/area_filter/area_filter_model.dart';
 import 'package:recipes_app/model/list_category/list_category_model.dart';
 import 'package:recipes_app/model/meal_details/meal_deails_model.dart';
 import 'package:recipes_app/model/meal_filter/meal_filter_model.dart';
@@ -25,20 +26,20 @@ abstract class MealService {
   Future<HttpResponse<MealDetailsModel>> getMealDetails(
     @Query('i') String id);
   
-
-  @GET('random.php')
-  Future<MealRandomModel> getRandomMeal();
+  @GET('/random.php')
+  Future<HttpResponse<MealRandomModel>>getRandomMeal();
  
-  @GET('categories.php')
-  Future<CategoriesModel> getCategories();
-
-
+  @GET('/list.php?c=list')
+  Future<HttpResponse<ListCategoryModel>> listCategoryMeal();
+ 
   @GET('/filter.php')
   Future<HttpResponse<MealFilterModel>> filterMeal(@Query('c') String query);
 
- @GET('/list.php?c=list')
-  Future<HttpResponse<ListCategoryModel>> listCategoryMeal();
- 
+  @GET('/list.php?a=list')
+  Future<HttpResponse<AreaModel>> listAreaMeal();
 
+   @GET('/filter.php')
+  Future<HttpResponse<AreaFilterModel>> filterArea(@Query('a') String query);
+ 
   
 }

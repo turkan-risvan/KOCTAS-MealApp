@@ -1,48 +1,47 @@
-import 'package:flutter/material.dart';
-import 'package:recipes_app/model/meal_random/meal_random_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:flutter/material.dart';
+// import 'package:recipes_app/model/meal_random/meal_random_model.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
+// import 'dart:convert';
  
-class FavoritesViewModel extends ChangeNotifier {
-  List<Meal> _favorites = [];
 
-  List<Meal> get favorites => _favorites;
+// class FavoritesViewModel extends ChangeNotifier {
+//   List<Meal> _favorites = [];
 
-  FavoritesViewModel() {
-    _loadFavorites();
-  }
+//   List<Meal> get favorites => _favorites;
 
-  void toggleFavorite(Meal meal) async {
-    if (_favorites.contains(meal)) {
-      _favorites.remove(meal);
-    } else {
-      _favorites.add(meal);
-    }
-    notifyListeners();
-    await _saveFavorites();
-  }
+//   FavoritesViewModel() {
+//     _loadFavorites();
+//   }
 
-  bool isFavorite(Meal meal) {
-    return _favorites.contains(meal);
-  }
+//   void addFavorite(Meal meal) {
+//     _favorites.add(meal);
+//     _saveFavorites();
+//     notifyListeners();
+//   }
 
-  Future<void> _saveFavorites() async {
-    final prefs = await SharedPreferences.getInstance();
-    List<String> mealIds = _favorites.map((meal) => meal.idMeal!).toList();
-    prefs.setStringList('favorites', mealIds);
-  }
+//   void removeFavorite(Meal meal) {
+//     _favorites.removeWhere((fav) => fav.idMeal == meal.idMeal);
+//     _saveFavorites();
+//     notifyListeners();
+//   }
 
-  Future<void> _loadFavorites() async {
-    final prefs = await SharedPreferences.getInstance();
-    List<String>? mealIds = prefs.getStringList('favorites');
-    if (mealIds != null) {
-      // Burada Meal objelerini id'leri ile yeniden oluşturmanız gerekebilir.
-      // Örneğin, Meal sınıfına bir fromId metodu ekleyebilirsiniz.
-      _favorites = mealIds.map((id) => Meal(idMeal: id)).toList();
-      notifyListeners();
-    }
-  }
+//   bool isFavorite(String idMeal) {
+//     return _favorites.any((meal) => meal.idMeal == idMeal);
+//   }
 
-  void removeFavorite(String s) {}
+//   Future<void> _loadFavorites() async {
+//     final prefs = await SharedPreferences.getInstance();
+//     final String? favoritesJson = prefs.getString('favorites');
+//     if (favoritesJson != null) {
+//       final List decoded = jsonDecode(favoritesJson);
+//       _favorites = decoded.map((meal) => Meal.fromJson(meal)).toList();
+//       notifyListeners();
+//     }
+//   }
 
-  void addFavorite(String s) {}
-}
+//   Future<void> _saveFavorites() async {
+//     final prefs = await SharedPreferences.getInstance();
+//     final String encoded = jsonEncode(_favorites.map((meal) => meal.toJson()).toList());
+//     prefs.setString('favorites', encoded);
+//   }
+// }
