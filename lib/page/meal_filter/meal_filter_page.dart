@@ -50,13 +50,7 @@ class _MealFilterPageState extends State<MealFilterPage> {
                         padding: const EdgeInsets.only(right: 30.0),
                         child: Text(
                           meal.strCategory ?? '',
-                          style: TextStyle(
-                            color: _selectedCategory == meal.strCategory
-                                ? Colors.orange
-                                : Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold
-                          ),
+                          style: TextStyle(color: _selectedCategory == meal.strCategory ? Colors.orange : Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                       ),
                     );
@@ -65,92 +59,90 @@ class _MealFilterPageState extends State<MealFilterPage> {
               );
             },
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Consumer<MealFilterViewModel>(
             builder: (context, viewModel, child) {
               if (viewModel.errorMessage != null) {
                 return Text(
                   viewModel.errorMessage!,
-                  style: TextStyle(color: Colors.red),
+                  style: const TextStyle(color: Colors.red),
                 );
               }
               if (viewModel.filterResults == null) {
-                return Center(
+                return const Center(
                   child: CircularProgressIndicator(),
                 );
               }
               return Expanded(
                 child: GridView.builder(
-  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-    crossAxisCount: 2,
-    childAspectRatio: 0.75,
-    crossAxisSpacing: 20,
-    mainAxisSpacing: 20,
-  ),
-  shrinkWrap: true,
-  itemCount: viewModel.filterResults!.meals!.length,
-  itemBuilder: (context, index) {
-    final meal = viewModel.filterResults!.meals![index];
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ChangeNotifierProvider(
-              create: (context) => MealDetailsViewModel(
-                MealDetailsRepository(MealService(Dio())),
-              ),
-              child: MealDetailsPage(mealId: meal.idMeal!),
-            ),
-          ),
-        );
-      },
-      child: Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-                child: meal.strMealThumb != null
-                    ? Image.network(
-                        meal.strMealThumb!,
-                        fit: BoxFit.cover,
-                      )
-                    : Placeholder(), // Placeholder for images not available
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    meal.strMeal ?? '',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.75,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 20,
                   ),
-                  SizedBox(height: 4),
-                  Text(
-                    meal.idMeal ?? '',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  },
-),
-
-             
+                  shrinkWrap: true,
+                  itemCount: viewModel.filterResults!.meals!.length,
+                  itemBuilder: (context, index) {
+                    final meal = viewModel.filterResults!.meals![index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChangeNotifierProvider(
+                              create: (context) => MealDetailsViewModel(
+                                MealDetailsRepository(MealService(Dio())),
+                              ),
+                              child: MealDetailsPage(mealId: meal.idMeal!),
+                            ),
+                          ),
+                        );
+                      },
+                      child: Card(
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+                                child: meal.strMealThumb != null
+                                    ? Image.network(
+                                        meal.strMealThumb!,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : const Placeholder(), 
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    meal.strMeal ?? '',
+                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    meal.idMeal ?? '',
+                                    style: const TextStyle(color: Colors.grey),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
               );
             },
           ),

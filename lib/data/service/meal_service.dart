@@ -40,4 +40,5 @@ abstract class MealService {
   Future<HttpResponse<ListCategoryModel>> listCategoryMeal();
  
 
+  
 }

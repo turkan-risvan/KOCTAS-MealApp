@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                      ChangeNotifierProvider(
                             create: (context) => SearchViewModel(widget.searchRepository),
                             child: Container(
-                              height: 650,
+                              height: 850,
                               color: Colors.orange,
                               width: double.infinity,
                               child: SearchPage(mealFilterRepository: widget.mealFilterRepository),
@@ -132,8 +132,8 @@ class FavoritesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Favorites')),
-      body: Center(child: Text('Favorites Page')),
+      appBar: AppBar(title: const Text('Favorites')),
+      body: const Center(child: Text('Favorites Page')),
     );
   }
 }
@@ -142,8 +142,8 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Profile')),
-      body: Center(child: Text('Profile Page')),
+      appBar: AppBar(title: const Text('Profile')),
+      body: const Center(child: Text('Profile Page')),
     );
   }
 }

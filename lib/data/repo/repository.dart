@@ -21,19 +21,7 @@ class CategoriesRepository {
   }
 }
 
-// class MealDetailsRepository {
-//   final MealService _mealService;
-
-//   MealDetailsRepository(this._mealService);
-
-//   Future<MealDetailsModel> fetchMealDetails(String id) async {
-//     try {
-//       return await _mealService.getMealDetails(id);
-//     } catch (e) {
-//       throw Exception('Failed to load meal details: $e');
-//     }
-//   }
-// }
+ 
 
 
 class MealDetailsRepository {
@@ -60,15 +48,7 @@ class SearchRepository {
 }
  
 
-// class MealFilterRepository {
-//   final MealService _service;
-
-//   MealFilterRepository(this._service);
-
-//   Future<HttpResponse<MealFilterModel>> filterMeal(String query) => _service.filterMeal(query);
-
-  
-// }
+ 
 
 class MealFilterRepository {
   final MealService _service;
@@ -80,6 +60,14 @@ class MealFilterRepository {
   Future<HttpResponse<ListCategoryModel>> listCategoryMeal() => _service.listCategoryMeal();
 }
 
+
+class AreaRepository {
+  final MealService mealService;
+
+  AreaRepository(this.mealService);
+
+ 
+}
 
 
  

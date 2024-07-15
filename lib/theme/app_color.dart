@@ -11,5 +11,5 @@ class AppColors {
   static const Color warningColor = Color(0xFFFFC107);
   static const Color infoColor = Color(0xFF2196F3);
 
-  // Define other colors here
+  
 }

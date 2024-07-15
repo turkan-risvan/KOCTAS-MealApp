@@ -13,7 +13,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
   void initState() {
     super.initState();
     // ViewModel'in fetchCategories metodunu sayfa yüklendiğinde bir kez çağır
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {  // ekrana çizilme işlemi yapıldıktan sonra belirli bir işlevi çalıştırlmak için çalışır.
       Provider.of<CategoriesViewModel>(context, listen: false).fetchCategories();
     });
   }

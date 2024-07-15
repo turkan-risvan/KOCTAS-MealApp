@@ -29,10 +29,13 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.drag_handle, color: Theme.of(context).iconTheme.color),
-
+        
+        leading: const Icon(Icons.drag_handle, color: Colors.orange),
         title: _isSearching
             ? TextField(
                 controller: _searchController,
@@ -47,6 +50,7 @@ class _SearchPageState extends State<SearchPage> {
               )
             : const Text(''),
         actions: [
+        
           IconButton(
             icon: Icon(
               _isSearching ? Icons.clear : Icons.search,
@@ -56,14 +60,13 @@ class _SearchPageState extends State<SearchPage> {
               setState(() {
                 _isSearching = !_isSearching;
                 if (!_isSearching) {
-                  // Clear search results when closing search
                   Provider.of<SearchViewModel>(context, listen: false);
-
-                  _searchController.clear(); // Clear the search input field
+                  _searchController.clear();
                 }
               });
             },
           ),
+            const Padding(padding:  EdgeInsets.only(left: 10)),
         ],
       ),
       body: Stack(
@@ -73,21 +76,18 @@ class _SearchPageState extends State<SearchPage> {
                 MealFilterViewModel(widget.mealFilterRepository),
             child: Column(
               children: [
+                const SizedBox(height: 20,),
                 Container(
-                  width: 300,
-                  height: 140,
+                  width: screenWidth * 0.8,
+                  height: screenHeight * 0.21,
                   decoration: BoxDecoration(
                     color: Colors.orange,
-                    borderRadius: BorderRadius.circular(20)
+                    borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                SizedBox(height: 10,),
-                SingleChildScrollView(
-                  child: Container(
-                    height: 400,
-                    width: double.infinity,
-                    child: MealFilterPage(),
-                  ),
+                const SizedBox(height: 20,),
+                Expanded(
+                  child: MealFilterPage(),
                 ),
               ],
             ),
@@ -99,11 +99,10 @@ class _SearchPageState extends State<SearchPage> {
               right: 0,
               child: Container(
                 color: Colors.white,
-                height: 300,
+                height: screenHeight * 0.5,
                 child: _buildSearchResults(),
               ),
             ),
-
         ],
       ),
     );
