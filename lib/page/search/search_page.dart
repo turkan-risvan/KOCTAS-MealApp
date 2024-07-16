@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recipes_app/page/drawer_page.dart';
- 
-import 'package:recipes_app/page/home/home_page.dart';
-import 'package:recipes_app/page/meal_filter/meal_filter_page.dart';
-import 'package:recipes_app/page/meal_filter/meal_filter_viewmodel.dart';
-import 'package:recipes_app/page/meal_random/meal_random_page.dart';
-import 'package:recipes_app/page/meal_random/meal_random_viewmodel.dart';
-import 'package:recipes_app/page/search/search_viewmodel.dart';
 import 'package:recipes_app/page/details/meal_details_page.dart';
 import 'package:recipes_app/page/details/meal_details_viewmodel.dart';
+import 'package:recipes_app/page/meal_random/meal_random_page.dart';
+import 'package:recipes_app/page/meal_random/meal_random_viewmodel.dart';
+import 'package:recipes_app/page/meal_filter/meal_filter_page.dart';
+import 'package:recipes_app/page/meal_filter/meal_filter_viewmodel.dart';
+import 'package:recipes_app/page/search/search_viewmodel.dart';
 import 'package:recipes_app/data/service/meal_service.dart';
 import 'package:recipes_app/data/repo/repository.dart';
 import 'package:dio/dio.dart';
@@ -19,6 +16,7 @@ class SearchPage extends StatefulWidget {
   final RandomRepository randomRepository;
 
   const SearchPage({super.key, required this.mealFilterRepository, required this.randomRepository});
+
   @override
   _SearchPageState createState() => _SearchPageState();
 }
@@ -39,24 +37,13 @@ class _SearchPageState extends State<SearchPage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-     
       appBar: AppBar(
-        
-        leading:  const Icon(Icons.drag_handle, color: Colors.orange),
-        
-        // IconButton(onPressed: () {
-        //   setState(() {
-        //     DrawerPage();
-        //   });
-        // }, icon: const Icon(Icons.drag_handle, color: Colors.orange)),
-      
-        
+        leading: const Icon(Icons.drag_handle, color: Colors.orange),
         title: _isSearching
             ? TextField(
                 controller: _searchController,
                 onChanged: (value) {
-                  Provider.of<SearchViewModel>(context, listen: false)
-                      .searchMeals(value);
+                  Provider.of<SearchViewModel>(context, listen: false).searchMeals(value);
                 },
                 decoration: const InputDecoration(
                   hintText: 'Yemek ara...',
@@ -65,7 +52,6 @@ class _SearchPageState extends State<SearchPage> {
               )
             : const Text(''),
         actions: [
-        
           IconButton(
             icon: Icon(
               _isSearching ? Icons.clear : Icons.search,
@@ -81,22 +67,26 @@ class _SearchPageState extends State<SearchPage> {
               });
             },
           ),
-            const Padding(padding:  EdgeInsets.only(left: 10)),
+          const Padding(padding: EdgeInsets.only(left: 10)),
         ],
       ),
       body: Stack(
         children: [
-         
           ChangeNotifierProvider(
-            create: (context) =>
-                MealFilterViewModel(widget.mealFilterRepository),
+            create: (context) => MealFilterViewModel(widget.mealFilterRepository),
             child: Column(
               children: [
                 const SizedBox(height: 20,),
                 Container(
-                  width: screenWidth * 0.8,
+                  width: screenWidth * 0.9,
                   height: screenHeight * 0.21,
-                  child:ChangeNotifierProvider(create: (context) => RandomMealViewModel(widget.randomRepository), child: MealRandomPage(),) ,
+                  child: ChangeNotifierProvider(
+                    create: (context) => RandomMealViewModel(widget.randomRepository),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: MealRandomPage(),
+                    ),
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.orange,
                     borderRadius: BorderRadius.circular(20),
@@ -109,8 +99,6 @@ class _SearchPageState extends State<SearchPage> {
               ],
             ),
           ),
-
-       
           if (_isSearching)
             Positioned(
               top: 0,
@@ -124,13 +112,6 @@ class _SearchPageState extends State<SearchPage> {
             ),
         ],
       ),
-    );
-  }
-
-  Widget _buildInitialContent() {
-    return const Center(
-      //child: Container(color: Colors.red,),
-      //child: Text("Press the search button to start searching."),
     );
   }
 

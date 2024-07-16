@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipes_app/data/repo/repository.dart';
- 
 import 'package:recipes_app/page/area/area_page.dart';
 import 'package:recipes_app/page/area/area_viewmodel.dart';
+import 'package:recipes_app/page/favorites/favorites_page.dart';
+import 'package:recipes_app/page/favorites/favorites_viewmodel.dart';
 import 'package:recipes_app/page/search/search_viewmodel.dart';
 import 'package:recipes_app/page/search/search_page.dart';
 
@@ -44,7 +45,10 @@ class _HomePageState extends State<HomePage> {
         create: (context) => AreaFilterViewModel(widget.areaFilterRepository),
         child: AreaFilterPage(areaFilterRepository: widget.areaFilterRepository),
       ),
-      FavoritesPage(),
+      ChangeNotifierProvider(
+        create: (context) => FavoritesViewModel(),  
+        child: FavoritesPage(), 
+      ),
       ProfilePage(),
     ];
   }
@@ -66,8 +70,8 @@ class _HomePageState extends State<HomePage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
+            icon: Icon(Icons.airplanemode_active_sharp),
+            label: 'Area',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
@@ -84,16 +88,6 @@ class _HomePageState extends State<HomePage> {
         onTap: _onItemTapped,
       ),
       body: _pages[_selectedIndex],
-    );
-  }
-}
-
-class FavoritesPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Favorites')),
-      body: const Center(child: Text('Favorites Page')),
     );
   }
 }

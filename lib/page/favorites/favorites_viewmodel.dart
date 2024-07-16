@@ -1,47 +1,32 @@
-// import 'package:flutter/material.dart';
-// import 'package:recipes_app/model/meal_random/meal_random_model.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-// import 'dart:convert';
- 
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-// class FavoritesViewModel extends ChangeNotifier {
-//   List<Meal> _favorites = [];
+class FavoritesViewModel extends ChangeNotifier {
+  List<String> _favorites = [];
 
-//   List<Meal> get favorites => _favorites;
+  List<String> get favorites => _favorites;
 
-//   FavoritesViewModel() {
-//     _loadFavorites();
-//   }
+  FavoritesViewModel() {
+    _loadFavorites();
+  }
 
-//   void addFavorite(Meal meal) {
-//     _favorites.add(meal);
-//     _saveFavorites();
-//     notifyListeners();
-//   }
+  void _loadFavorites() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _favorites = prefs.getStringList('favorites') ?? [];
+    notifyListeners();
+  }
 
-//   void removeFavorite(Meal meal) {
-//     _favorites.removeWhere((fav) => fav.idMeal == meal.idMeal);
-//     _saveFavorites();
-//     notifyListeners();
-//   }
+  Future<void> addFavorite(String mealId) async {
+    _favorites.add(mealId);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('favorites', _favorites);
+    notifyListeners();
+  }
 
-//   bool isFavorite(String idMeal) {
-//     return _favorites.any((meal) => meal.idMeal == idMeal);
-//   }
-
-//   Future<void> _loadFavorites() async {
-//     final prefs = await SharedPreferences.getInstance();
-//     final String? favoritesJson = prefs.getString('favorites');
-//     if (favoritesJson != null) {
-//       final List decoded = jsonDecode(favoritesJson);
-//       _favorites = decoded.map((meal) => Meal.fromJson(meal)).toList();
-//       notifyListeners();
-//     }
-//   }
-
-//   Future<void> _saveFavorites() async {
-//     final prefs = await SharedPreferences.getInstance();
-//     final String encoded = jsonEncode(_favorites.map((meal) => meal.toJson()).toList());
-//     prefs.setString('favorites', encoded);
-//   }
-// }
+  Future<void> removeFavorite(String mealId) async {
+    _favorites.remove(mealId);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('favorites', _favorites);
+    notifyListeners();
+  }
+}
