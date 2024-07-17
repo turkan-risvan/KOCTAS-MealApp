@@ -21,7 +21,13 @@ class _AreaFilterPageState extends State<AreaFilterPage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<AreaFilterViewModel>(context, listen: false).listAreas();
+    Provider.of<AreaFilterViewModel>(context, listen: false).listAreas().then((_) {
+      final viewModel = Provider.of<AreaFilterViewModel>(context, listen: false);
+      if (viewModel.areaCategories != null && viewModel.areaCategories!.meals!.isNotEmpty) {
+        _selectedArea = viewModel.areaCategories!.meals!.first.strArea;
+        viewModel.filterAreas(_selectedArea!);
+      }
+    });
   }
 
   @override
@@ -38,28 +44,21 @@ class _AreaFilterPageState extends State<AreaFilterPage> {
                 if (viewModel.areaCategories == null) {
                   return const Center(child: CircularProgressIndicator());
                 }
-                return Expanded(
-                  child: GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      childAspectRatio: 3,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                    ),
-                    itemCount: viewModel.areaCategories!.meals!.length,
-                    itemBuilder: (context, index) {
-                      final meal = viewModel.areaCategories!.meals![index];
-                      return TextButton(
-                        onPressed: () {
-                          setState(() {
-                            _selectedArea = meal.strArea;
-                          });
-                          if (meal.strArea != null) {
-                            viewModel.filterAreas(meal.strArea!);
-                          }
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: viewModel.areaCategories!.meals!.map((meal) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: TextButton(
+                          onPressed: () {
+                            setState(() {
+                              _selectedArea = meal.strArea;
+                            });
+                            if (meal.strArea != null) {
+                              viewModel.filterAreas(meal.strArea!);
+                            }
+                          },
                           child: Text(
                             meal.strArea ?? '',
                             style: TextStyle(
@@ -71,7 +70,7 @@ class _AreaFilterPageState extends State<AreaFilterPage> {
                           ),
                         ),
                       );
-                    },
+                    }).toList(),
                   ),
                 );
               },
@@ -86,15 +85,13 @@ class _AreaFilterPageState extends State<AreaFilterPage> {
                   );
                 }
                 if (viewModel.filterResults == null) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return const Center(child: CircularProgressIndicator());
                 }
                 return Expanded(
                   child: GridView.builder(
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      childAspectRatio: 0.75,
+                      childAspectRatio: 1,
                       crossAxisSpacing: 20,
                       mainAxisSpacing: 20,
                     ),
@@ -132,7 +129,7 @@ class _AreaFilterPageState extends State<AreaFilterPage> {
                                           meal.strMealThumb!,
                                           fit: BoxFit.cover,
                                         )
-                                      : const Placeholder(), // Placeholder for images not available
+                                      : const Placeholder(), // Resimler için yer tutucu mevcut değil
                                 ),
                               ),
                               Padding(
@@ -142,14 +139,9 @@ class _AreaFilterPageState extends State<AreaFilterPage> {
                                   children: [
                                     Text(
                                       meal.strMeal ?? '',
-                                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      meal.idMeal ?? '',
-                                      style: const TextStyle(color: Colors.grey),
                                     ),
                                   ],
                                 ),

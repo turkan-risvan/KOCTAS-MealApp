@@ -13,70 +13,77 @@ class FavoritesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Favorites'),
+        title: const Text('Favorites'),
       ),
       body: Consumer<FavoritesViewModel>(
         builder: (context, viewModel, child) {
           if (viewModel.favorites.isEmpty) {
-            return Center(child: Text('No favorites added'));
-          } else {
-            return ListView.builder(
-              itemCount: viewModel.favorites.length,
-              itemBuilder: (context, index) {
-                return FutureBuilder<MealDetailsModel>(
-                  future: _fetchMealDetails(viewModel.favorites[index]),
-                  builder: (context, mealSnapshot) {
-                    if (mealSnapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    } else if (mealSnapshot.hasError) {
-                      return Center(child: Text('Error loading meal details'));
-                    } else {
-                      final meal = mealSnapshot.data!.meals!.first;
-                      return Card(
-                        elevation: 4,
-                        margin: EdgeInsets.all(10),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: ListTile(
-                          leading: meal.strMealThumb != null
-                              ? Image.network(meal.strMealThumb!, fit: BoxFit.cover, width: 50, height: 50)
-                              : Placeholder(),
-                          title: Text(meal.strMeal ?? ''),
-                          trailing: IconButton(
-                            icon: Icon(Icons.delete),
-                            onPressed: () async {
-                              await viewModel.removeFavorite(viewModel.favorites[index]);
-                            },
-                          ),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ChangeNotifierProvider(
-                                  create: (context) => MealDetailsViewModel(
-                                    MealDetailsRepository(MealService(Dio())),
-                                  ),
-                                  child: MealDetailsPage(mealId: viewModel.favorites[index]),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      );
-                    }
-                  },
-                );
-              },
-            );
+            return const Center(child: Text('No favorites added'));
           }
+
+          return FutureBuilder<List<MealDetailsModel>>(
+            future: _fetchAllMealDetails(viewModel.favorites),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if (snapshot.hasError) {
+                return const Center(child: Text('Error loading meal details'));
+              }
+
+              final mealDetails = snapshot.data ?? [];
+              if (mealDetails.isEmpty) {
+                return const Center(child: Text('No meal details available'));
+              }
+
+              return ListView.builder(
+                itemCount: mealDetails.length,
+                itemBuilder: (context, index) {
+                  final meal = mealDetails[index].meals!.first;
+                  return Card(
+                    elevation: 4,
+                    margin: const EdgeInsets.all(5),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ListTile(
+                      leading: meal.strMealThumb != null
+                          ? Image.network(meal.strMealThumb!, fit: BoxFit.cover, width: 50, height: 50)
+                          : const Placeholder(),
+                      title: Text(meal.strMeal ?? ''),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.orange),
+                        onPressed: () async {
+                          await viewModel.removeFavorite(viewModel.favorites[index]);
+                        },
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChangeNotifierProvider(
+                              create: (context) => MealDetailsViewModel(
+                                MealDetailsRepository(MealService(Dio())),
+                              ),
+                              child: MealDetailsPage(mealId: viewModel.favorites[index]),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              );
+            },
+          );
         },
       ),
     );
   }
 
-  Future<MealDetailsModel> _fetchMealDetails(String mealId) async {
+  Future<List<MealDetailsModel>> _fetchAllMealDetails(List<String> mealIds) async {
     final repository = MealDetailsRepository(MealService(Dio()));
-    return await repository.fetchMealDetails(mealId);
+    return Future.wait(mealIds.map((id) => repository.fetchMealDetails(id)));
   }
 }

@@ -76,7 +76,7 @@ class _SearchPageState extends State<SearchPage> {
             create: (context) => MealFilterViewModel(widget.mealFilterRepository),
             child: Column(
               children: [
-                const SizedBox(height: 20,),
+        
                 Container(
                   width: screenWidth * 0.9,
                   height: screenHeight * 0.21,
@@ -92,7 +92,7 @@ class _SearchPageState extends State<SearchPage> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                const SizedBox(height: 20,),
+           
                 Expanded(
                   child: MealFilterPage(),
                 ),
