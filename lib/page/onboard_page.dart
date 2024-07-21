@@ -10,7 +10,7 @@ import 'package:recipes_app/page/details/meal_details_viewmodel.dart';
 class OnboardingSliderPage extends StatefulWidget {
   final RandomRepository randomRepository;
 
-  OnboardingSliderPage({required this.randomRepository});
+  const OnboardingSliderPage({required this.randomRepository});
 
   @override
   _OnboardingSliderPageState createState() => _OnboardingSliderPageState();
@@ -29,17 +29,17 @@ class _OnboardingSliderPageState extends State<OnboardingSliderPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Random Meal'),
+        title: const Text('Random Meal'),
       ),
       body: FutureBuilder<MealRandomModel>(
         future: _randomMeal,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.meals!.isEmpty) {
-            return Center(child: Text('No data available'));
+            return const Center(child: Text('No data available'));
           } else {
             return PageView.builder(
               itemCount: snapshot.data!.meals!.length,
@@ -56,7 +56,7 @@ class _OnboardingSliderPageState extends State<OnboardingSliderPage> {
 
   Widget _buildMealCard(Meal meal) {
     return Card(
-      margin: EdgeInsets.all(20),
+      margin: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -68,19 +68,19 @@ class _OnboardingSliderPageState extends State<OnboardingSliderPage> {
               children: [
                 Text(
                   meal.strMeal ?? '',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
                   'Category: ${meal.strCategory ?? ''}',
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
                   'Area: ${meal.strArea ?? ''}',
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
@@ -95,7 +95,7 @@ class _OnboardingSliderPageState extends State<OnboardingSliderPage> {
                       ),
                     );
                   },
-                  child: Text('View Details'),
+                  child: const Text('View Details'),
                 ),
               ],
             ),

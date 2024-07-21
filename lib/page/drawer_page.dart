@@ -6,17 +6,17 @@ class DrawerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text('Profile'),
       ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children:[
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
-              child: Column(
+              child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
@@ -39,8 +39,8 @@ class DrawerPage extends StatelessWidget {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.person),
-              title: Text('Profile'),
+              leading: const Icon(Icons.person),
+              title: const Text('Profile'),
               onTap: () {
                 // Handle profile page navigation
                 Navigator.pop(context); // Close the drawer
@@ -48,8 +48,8 @@ class DrawerPage extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
               onTap: () {
                 // Handle settings page navigation
                 Navigator.pop(context); // Close the drawer
@@ -57,8 +57,8 @@ class DrawerPage extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Logout'),
+              leading: const Icon(Icons.logout),
+              title: const Text('Logout'),
               onTap: () {
                 // Handle logout
                 Navigator.pop(context); // Close the drawer
@@ -68,7 +68,7 @@ class DrawerPage extends StatelessWidget {
           ],
         ),
       ),
-      body: Center(
+      body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

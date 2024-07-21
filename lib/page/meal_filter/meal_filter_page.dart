@@ -18,7 +18,16 @@ class _MealFilterPageState extends State<MealFilterPage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<MealFilterViewModel>(context, listen: false).listMeals();
+    final viewModel = Provider.of<MealFilterViewModel>(context, listen: false);
+    viewModel.listMeals().then((_) {
+      // Kategoriler yüklendiğinde ilk kategoriyi seçili yap
+      if (viewModel.mealCategories != null && viewModel.mealCategories!.meals!.isNotEmpty) {
+        setState(() {
+          _selectedCategory = viewModel.mealCategories!.meals!.first.strCategory;
+        });
+        viewModel.filterMeals(_selectedCategory!);
+      }
+    });
   }
 
   @override
@@ -30,8 +39,9 @@ class _MealFilterPageState extends State<MealFilterPage> {
         children: [
           Consumer<MealFilterViewModel>(
             builder: (context, viewModel, child) {
+              // Eğer mealCategories null ise, boş bir widget döndür
               if (viewModel.mealCategories == null) {
-                return const Center(child: CircularProgressIndicator());
+                return const SizedBox(); // Veri yüklenirken hiçbir şey göstermemek için
               }
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -73,17 +83,15 @@ class _MealFilterPageState extends State<MealFilterPage> {
                 );
               }
               if (viewModel.filterResults == null) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+                return const SizedBox(); // Veriler yüklenirken boş bir widget döndür
               }
               return Expanded(
                 child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: 1.0, // Card'ların daha kısa görünmesini sağlar
-                    crossAxisSpacing: 10, // Aralarındaki yatay boşlukları ayarlar
-                    mainAxisSpacing: 10, // Aralarındaki dikey boşlukları ayarlar
+                    childAspectRatio: 1.0,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
                   ),
                   shrinkWrap: true,
                   itemCount: viewModel.filterResults!.meals!.length,
@@ -133,11 +141,6 @@ class _MealFilterPageState extends State<MealFilterPage> {
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
-                                  // const SizedBox(height: 4),
-                                  // Text(
-                                  //   meal.idMeal ?? '',
-                                  //   style: const TextStyle(color: Colors.grey),
-                                  // ),
                                 ],
                               ),
                             ),

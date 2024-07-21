@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'package:recipes_app/page/details/meal_details_viewmodel.dart';
-import 'package:recipes_app/page/video_page.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:recipes_app/page/details/meal_details_viewmodel.dart';
 
 class MealDetailsPage extends StatefulWidget {
   final String mealId;
@@ -60,13 +58,11 @@ class _MealDetailsPageState extends State<MealDetailsPage> {
                     meal.strMealThumb!,
                     fit: BoxFit.contain,
                   ),
+                
                 Container(
                   decoration: const BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(50),
-                      topLeft: Radius.circular(50),
-                    ),
+                    borderRadius: BorderRadius.only(topRight: Radius.circular(50), topLeft: Radius.circular(50)),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(18.0),
@@ -76,44 +72,31 @@ class _MealDetailsPageState extends State<MealDetailsPage> {
                           meal.strMeal ?? '',
                           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                         ),
+                     
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Column(
                               children: [
-                               IconButton(
-  iconSize: 25,
-  icon: const Icon(
-    Icons.video_collection_outlined,
-    color: Color(0xfff07e33),
-  ),
-  onPressed: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => VideoPlayerPage(videoUrl: meal.strYoutube ?? ''),
-      ),
-    );
-  },
-),
-
-                                const Text(
-                                  "Cook",
-                                  style: TextStyle(color: Colors.black, fontSize: 11),
-                                )
+                                IconButton(
+                                  iconSize: 25,
+                                  icon: const Icon(Icons.video_collection_outlined, color: Color(0xfff07e33)),
+                                  onPressed: () async {
+                                    final url = meal.strYoutube;
+                                    if (url != null && url.isNotEmpty) {
+                                      await _launchUrl(url);
+                                    }
+                                  },
+                                ),
+                                const Text("Cook", style: TextStyle(color: Colors.black, fontSize: 11)),
                               ],
                             ),
-                            const SizedBox(
-                              width: 40,
-                            ),
+                            const SizedBox(width: 40),
                             Column(
                               children: [
                                 IconButton(
                                   iconSize: 25,
-                                  icon: Icon(
-                                    isFavorite ? Icons.favorite : Icons.favorite_border,
-                                    color: const Color(0xfff07e33),
-                                  ),
+                                  icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border, color: const Color(0xfff07e33)),
                                   color: isFavorite ? Colors.red : null,
                                   onPressed: () {
                                     setState(() {
@@ -122,38 +105,30 @@ class _MealDetailsPageState extends State<MealDetailsPage> {
                                     viewModel.toggleFavorite(widget.mealId);
                                   },
                                 ),
-                                const Text(
-                                  "Favorite",
-                                  style: TextStyle(color: Colors.black, fontSize: 11),
-                                )
+                                const Text("Favorite", style: TextStyle(color: Colors.black, fontSize: 11)),
                               ],
                             ),
-                            const SizedBox(
-                              width: 40,
-                            ),
+                            const SizedBox(width: 40),
                             Column(
                               children: [
                                 IconButton(
                                   iconSize: 25,
-                                  icon: const Icon(
-                                    Icons.edit_document,
-                                    color: Color(0xfff07e33),
-                                  ),
+                                  icon: const Icon(Icons.edit_document, color: Color(0xfff07e33)),
                                   onPressed: () {
                                     setState(() {});
                                   },
                                 ),
-                                const Text(
-                                  "Calories",
-                                  style: TextStyle(color: Colors.black, fontSize: 11),
-                                )
+                                const Text("Calories", style: TextStyle(color: Colors.black, fontSize: 11)),
                               ],
                             ),
                           ],
                         ),
                         const SizedBox(height: 16),
                         Container(
-                          decoration: BoxDecoration(color: const Color(0xfffdf5ef), borderRadius: BorderRadius.circular(10)),
+                          decoration: BoxDecoration(
+                            color: const Color(0xfffdf5ef),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Column(
@@ -163,9 +138,7 @@ class _MealDetailsPageState extends State<MealDetailsPage> {
                                   "Yapılış Talimatları",
                                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                                 ),
-                                const SizedBox(
-                                  height: 3,
-                                ),
+                                const SizedBox(height: 3),
                                 ExpandableText(
                                   text: meal.strInstructions ?? '',
                                   maxLines: 4,
@@ -286,51 +259,52 @@ class _MealDetailsPageState extends State<MealDetailsPage> {
             ),
           ],
         ),
-        TableRow(
-          children: [
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'Source',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(meal.strSource ?? ''),
-            ),
-          ],
-        ),
-        TableRow(
-          children: [
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'Youtube',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                _launchVideo(meal.strYoutube ?? '');
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  meal.strYoutube ?? '',
-                  style: TextStyle(color: Colors.blue),
-                ),
-              ),
-            ),
-          ],
-        ),
+        // TableRow(
+        //   children: [
+        //     const Padding(
+        //       padding: EdgeInsets.all(8.0),
+        //       child: Text(
+        //         'Source',
+        //         style: TextStyle(fontWeight: FontWeight.bold),
+        //       ),
+        //     ),
+        //     Padding(
+        //       padding: const EdgeInsets.all(8.0),
+        //       child: Text(meal.strSource ?? ''),
+        //     ),
+        //   ],
+        // ),
+        // TableRow(
+        //   children: [
+        //     const Padding(
+        //       padding: EdgeInsets.all(8.0),
+        //       child: Text(
+        //         'Youtube',
+        //         style: TextStyle(fontWeight: FontWeight.bold),
+        //       ),
+        //     ),
+        //     Padding(
+        //       padding: const EdgeInsets.all(8.0),
+        //       child: TextButton(
+        //         onPressed: () async {
+        //           final url = meal.strYoutube;
+        //           if (url != null && url.isNotEmpty) {
+        //             await _launchUrl(url);
+        //           }
+        //         },
+        //         child: Text(meal.strYoutube ?? ''),
+        //       ),
+        //     ),
+        //   ],
+        // ),
       ],
     );
   }
 
-  void _launchVideo(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+  Future<void> _launchUrl(String url) async {
+    Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
     } else {
       throw 'Could not launch $url';
     }
@@ -360,14 +334,12 @@ class _ExpandableTextState extends State<ExpandableText> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          widget.text,
           style: const TextStyle(fontSize: 12),
+          widget.text,
           maxLines: expanded ? null : widget.maxLines,
           overflow: expanded ? TextOverflow.visible : TextOverflow.ellipsis,
         ),
-        const SizedBox(
-          height: 5,
-        ),
+        const SizedBox(height: 5),
         InkWell(
           onTap: () {
             setState(() {
@@ -376,10 +348,7 @@ class _ExpandableTextState extends State<ExpandableText> {
           },
           child: Text(
             expanded ? 'Daha az göster' : 'Daha fazla göster',
-            style: const TextStyle(
-              color: Color(0xfff07e33),
-              fontSize: 12,
-            ),
+            style: const TextStyle(color: Color(0xfff07e33), fontSize: 12),
           ),
         ),
       ],
