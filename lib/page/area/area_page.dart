@@ -18,6 +18,17 @@ class AreaFilterPage extends StatefulWidget {
 class _AreaFilterPageState extends State<AreaFilterPage> {
   String? _selectedArea;
 
+  // Resimlerin listesi
+  final List<String> _areaImages = [
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXYFsSrBZl-4D7bBgav-iTBUFCu9vf2PubEDNzltuQ2F67St01TKxMXH5kRvOTjESjhes&usqp=CAU',
+    'https://m.media-amazon.com/images/I/71KUWgkWhkL._AC_UF1000,1000_QL80_.jpg',
+    'https://m.media-amazon.com/images/I/61TcZ33ZrJL._AC_SY575_.jpg',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREwDxL0mC8mM24jZlcCPShwdgFUSAQEXzgqsJz4C6Vj-BmAV21z6JLeDr4ss6td86FY-E&usqp=CAU',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5_WZBKxNqQVHC6l1WXVai1z6pFvVIj7f1x6F1PMTkyLLPwUEtWu352So5SOXk9JuCcx0&usqp=CAU',
+    'https://w7.pngwing.com/pngs/711/749/png-transparent-netherlands-flag-round-icon-thumbnail.png',
+    'https://w7.pngwing.com/pngs/869/161/png-transparent-flag-of-egypt-egyptian-premier-league-flag-of-croatia-egypt-emblem-flag-egypt.png'
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -33,7 +44,7 @@ class _AreaFilterPageState extends State<AreaFilterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Ülkeler")),
+      appBar: AppBar(title: Center(child: Text("Ülkeler"))),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -47,7 +58,11 @@ class _AreaFilterPageState extends State<AreaFilterPage> {
                 return SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
-                    children: viewModel.areaCategories!.meals!.map((meal) {
+                    children: viewModel.areaCategories!.meals!.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final meal = entry.value;
+                      final imageUrl = index < _areaImages.length ? _areaImages[index] : '';
+
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         child: TextButton(
@@ -59,14 +74,23 @@ class _AreaFilterPageState extends State<AreaFilterPage> {
                               viewModel.filterAreas(meal.strArea!);
                             }
                           },
-                          child: Text(
-                            meal.strArea ?? '',
-                            style: TextStyle(
-                              color: _selectedArea == meal.strArea ? Colors.orange : Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            textAlign: TextAlign.center,
+                          child: Column(
+                            children: [
+                              CircleAvatar(
+                                backgroundImage: imageUrl.isNotEmpty ? NetworkImage(imageUrl) : null,
+                                backgroundColor: Colors.grey[200],
+                                radius: 20,
+                              ),
+                              const SizedBox(height: 5),
+                              Text(
+                                meal.strArea ?? '',
+                                style: TextStyle(
+                                  color: _selectedArea == meal.strArea ? Colors.orange : Colors.grey,
+                                  fontSize: 16,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
                           ),
                         ),
                       );
@@ -85,7 +109,7 @@ class _AreaFilterPageState extends State<AreaFilterPage> {
                   );
                 }
                 if (viewModel.filterResults == null) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(child: Text("Yükleniyor..."));
                 }
                 return Expanded(
                   child: GridView.builder(
@@ -139,7 +163,7 @@ class _AreaFilterPageState extends State<AreaFilterPage> {
                                   children: [
                                     Text(
                                       meal.strMeal ?? '',
-                                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                                      style: const TextStyle(fontSize: 13),
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                     ),

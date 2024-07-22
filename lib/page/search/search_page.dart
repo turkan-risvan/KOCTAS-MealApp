@@ -15,7 +15,8 @@ class SearchPage extends StatefulWidget {
   final MealFilterRepository mealFilterRepository;
   final RandomRepository randomRepository;
 
-  const SearchPage({super.key, required this.mealFilterRepository, required this.randomRepository});
+  const SearchPage(
+      {super.key, required this.mealFilterRepository, required this.randomRepository});
 
   @override
   _SearchPageState createState() => _SearchPageState();
@@ -39,77 +40,96 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       appBar: AppBar(
         leading: const Icon(Icons.drag_handle, color: Colors.orange),
-        title: _isSearching
-            ? TextField(
-                controller: _searchController,
-                onChanged: (value) {
-                  Provider.of<SearchViewModel>(context, listen: false).searchMeals(value);
-                },
-                decoration: const InputDecoration(
-                  hintText: 'Yemek ara...',
-                  border: InputBorder.none,
-                ),
-              )
-            : const Text(''),
-        actions: [
-          IconButton(
-            icon: Icon(
-              _isSearching ? Icons.clear : Icons.search,
-              color: const Color(0xffff774d),
-            ),
-            onPressed: () {
-              setState(() {
-                _isSearching = !_isSearching;
-                if (!_isSearching) {
-                  Provider.of<SearchViewModel>(context, listen: false);
-                  _searchController.clear();
-                }
-              });
-            },
-          ),
-          const Padding(padding: EdgeInsets.only(left: 10)),
-        ],
+        title: const Text('Yemek Tarifi Uygulaması'),
       ),
-      body: Stack(
+      body: Column(
         children: [
-          ChangeNotifierProvider(
-            create: (context) => MealFilterViewModel(widget.mealFilterRepository),
-            child: Column(
-              children: [
-        
-                Container(
-                  width: screenWidth * 0.9,
-                  height: screenHeight * 0.21,
-                  child: ChangeNotifierProvider(
-                    create: (context) => RandomMealViewModel(widget.randomRepository),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: MealRandomPage(),
-                    ),
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.orange,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
-           
-                Expanded(
-                  child: MealFilterPage(),
-                ),
-              ],
-            ),
-          ),
-          if (_isSearching)
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: Container(
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Container(
+              decoration: BoxDecoration(
                 color: Colors.white,
-                height: screenHeight * 0.5,
-                child: _buildSearchResults(),
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: [
+                  
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    spreadRadius: 6,
+                    blurRadius: 7,
+                    offset: Offset(-1, 3), // gölgenin konumunu değiştirir
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: _searchController,
+                      onChanged: (value) {
+                        Provider.of<SearchViewModel>(context, listen: false)
+                            .searchMeals(value);
+                      },
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(10),
+                        hintText: 'Yemek ara...',
+                        hintStyle: TextStyle(color: const Color.fromARGB(255, 196, 196, 196), fontSize: 15,),
+                        border: InputBorder.none,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isSearching ? Icons.clear : Icons.search,
+                            color: const Color(0xffff774d),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isSearching = !_isSearching;
+                              if (!_isSearching) {
+                                Provider.of<SearchViewModel>(context, listen: false);
+                                _searchController.clear();
+                              }
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    if (_isSearching) 
+                      SizedBox(
+                        height: screenHeight * 0.4,
+                        child: _buildSearchResults(),
+                      ),
+                  ],
+                ),
               ),
             ),
+          ),
+          Expanded(
+            child: ChangeNotifierProvider(
+              create: (context) => MealFilterViewModel(widget.mealFilterRepository),
+              child: Column(
+                children: [
+                  Container(
+                    width: screenWidth * 0.9,
+                    height: screenHeight * 0.21,
+                    child: ChangeNotifierProvider(
+                      create: (context) =>
+                          RandomMealViewModel(widget.randomRepository),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: MealRandomPage(),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  Expanded(
+                    child: MealFilterPage(),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

@@ -61,9 +61,9 @@ class _MealFilterPageState extends State<MealFilterPage> {
                         child: Text(
                           meal.strCategory ?? '',
                           style: TextStyle(
-                            color: _selectedCategory == meal.strCategory ? Colors.orange : Colors.black,
+                            color: _selectedCategory == meal.strCategory ? Colors.orange : const Color(0xffd6d6d6),
                             fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                            
                           ),
                         ),
                       ),
@@ -86,14 +86,8 @@ class _MealFilterPageState extends State<MealFilterPage> {
                 return const SizedBox(); // Veriler yüklenirken boş bir widget döndür
               }
               return Expanded(
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 1.0,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                  ),
-                  shrinkWrap: true,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
                   itemCount: viewModel.filterResults!.meals!.length,
                   itemBuilder: (context, index) {
                     final meal = viewModel.filterResults!.meals![index];
@@ -111,40 +105,60 @@ class _MealFilterPageState extends State<MealFilterPage> {
                           ),
                         );
                       },
-                      child: Card(
-                        elevation: 4,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Expanded(
-                              child: ClipRRect(
-                                borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
-                                child: meal.strMealThumb != null
-                                    ? Image.network(
-                                        meal.strMealThumb!,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : const Placeholder(), // Placeholder for images not available
-                              ),
+                      child: Container(
+                        width: 200,
+                        // margin: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Card(
+                          shadowColor: Colors.orange,
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                            side: const BorderSide(
+                              color: Colors.orange, // Kenar rengi
+                              width: 1.0, // Kenar genişliği
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    meal.strMeal ?? '',
-                                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              AspectRatio(
+                                aspectRatio: 16 / 18, // Kartın görüntü oranını ayarlayın
+                                child: ClipRRect(
+                                  borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+                                  child: meal.strMealThumb != null
+                                      ? Image.network(
+                                          meal.strMealThumb!,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : const Placeholder(),
+                                ),
+                              ),
+                              const Spacer(),
+                              Container(
+                                height: 60,
+                                decoration: const BoxDecoration(
+                                  color: Color.fromARGB(255, 252, 127, 49),
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(0),
+                                    topRight: Radius.circular(0),
+                                    bottomLeft: Radius.circular(10),
+                                    bottomRight: Radius.circular(10),
                                   ),
-                                ],
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Center(
+                                    child: Text(
+                                      meal.strMeal ?? '',
+                                      style: const TextStyle(fontSize: 14, color: Colors.white),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     );

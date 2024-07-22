@@ -13,7 +13,7 @@ class FavoritesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Favorites'),
+        title: const Center(child: Text('Favorites')),
       ),
       body: Consumer<FavoritesViewModel>(
         builder: (context, viewModel, child) {
@@ -41,36 +41,80 @@ class FavoritesPage extends StatelessWidget {
                 itemCount: mealDetails.length,
                 itemBuilder: (context, index) {
                   final meal = mealDetails[index].meals!.first;
-                  return Card(
-                    elevation: 4,
-                    margin: const EdgeInsets.all(5),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                  final mealId = viewModel.favorites[index];
+
+                  return Dismissible(
+                    key: Key(mealId), // Her öğeye özgü bir anahtar verin
+                    direction: DismissDirection.endToStart, // Sağdan sola kaydırma
+                    onDismissed: (direction) async {
+                      // Favorilerden kaldır
+                      await viewModel.removeFavorite(mealId);
+
+                      // SnackBar ile bildirim göster
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('${meal.strMeal ?? ''} silindi.'),
+                        ),
+                      );
+                    },
+                    background: Container(
+                      color: Colors.orange,
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: const Icon(Icons.delete, color: Colors.white),
                     ),
-                    child: ListTile(
-                      leading: meal.strMealThumb != null
-                          ? Image.network(meal.strMealThumb!, fit: BoxFit.cover, width: 50, height: 50)
-                          : const Placeholder(),
-                      title: Text(meal.strMeal ?? ''),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete, color: Colors.orange),
-                        onPressed: () async {
-                          await viewModel.removeFavorite(viewModel.favorites[index]);
+                    child: Card(
+                      shadowColor: Colors.orange,
+                      elevation: 6,
+                      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      shape: RoundedRectangleBorder(
+
+                        side: const BorderSide(color: Color.fromARGB(255, 243, 192, 162)),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.all(10),
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: meal.strMealThumb != null
+                              ? Image.network(
+                                  meal.strMealThumb!,
+                                  fit: BoxFit.cover,
+                                  width: 70,
+                                  height: 70,
+                                )
+                              : const Icon(Icons.fastfood, size: 50, color: Colors.orange),
+                        ),
+                        title: Text(
+                          meal.strMeal ?? '',
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        subtitle: Text(
+                          meal.strCategory ?? '',
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.black54,
+                          ),
+                        ),
+                        trailing: Icon(Icons.arrow_forward_ios, color: Colors.orange,size: 20,),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChangeNotifierProvider(
+                                create: (context) => MealDetailsViewModel(
+                                  MealDetailsRepository(MealService(Dio())),
+                                ),
+                                child: MealDetailsPage(mealId: mealId),
+                              ),
+                            ),
+                          );
                         },
                       ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ChangeNotifierProvider(
-                              create: (context) => MealDetailsViewModel(
-                                MealDetailsRepository(MealService(Dio())),
-                              ),
-                              child: MealDetailsPage(mealId: viewModel.favorites[index]),
-                            ),
-                          ),
-                        );
-                      },
                     ),
                   );
                 },
